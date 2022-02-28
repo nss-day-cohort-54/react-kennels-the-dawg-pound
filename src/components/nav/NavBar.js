@@ -14,7 +14,8 @@ export const NavBar = () => {
     const [ searchTerms, setTerms ] = useState("")
 
     const { isAuthenticated, logout, getCurrentUser } = useSimpleAuth()
-    //???
+    //when function happens, redirects to url with /search
+    //useHistory is a statehook
     const history = useHistory()
     //function that searches using e as a parameter
     //e = event?

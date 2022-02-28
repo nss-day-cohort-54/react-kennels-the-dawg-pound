@@ -28,6 +28,12 @@ export default ({ employee }) => {
         }
     }, [resource])
 
+    useEffect(() => {
+        if (resource?.animals?.length > 0) {
+            setCount(resource.animals.length)
+        }
+    }, [resource])
+
     return (
         <article className={classes}>
             <section className="card-body">
@@ -50,7 +56,7 @@ export default ({ employee }) => {
                     employeeId
                         ? <>
                             <section>
-                                Caring for 0 animals
+                                Caring for {animalCount} animals
                             </section>
                             <section>
                                 Working at unknown location

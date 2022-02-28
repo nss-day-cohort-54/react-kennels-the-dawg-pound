@@ -1,0 +1,26 @@
+.Modal {
+    position: absolute;
+    top: 15em;
+    left: 10em;
+    right: 10em;
+    bottom: 23em;
+    background-color: rgb(243, 243, 226);
+    box-shadow: 5px 15px 20px rgba(72, 62, 23, 0.4);
+    border-radius: 0.5em;
+}
+
+.Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: whitesmoke;
+}
+
+.employees {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: wrap;
+}

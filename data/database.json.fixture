@@ -1,0 +1,396 @@
+{
+  "animals": [
+    {
+      "id": 1,
+      "name": "Doodles",
+      "breed": "German Shepherd",
+      "locationId": 1
+    },
+    {
+      "id": 3,
+      "name": "Angus",
+      "breed": "Dalmatian 👾",
+      "locationId": 1
+    },
+    {
+      "id": 4,
+      "name": "Henley",
+      "breed": "Carolina Retriever 🚒",
+      "locationId": 1
+    },
+    {
+      "id": 5,
+      "name": "Derkins",
+      "breed": "Shih tzu 👿",
+      "locationId": 2
+    },
+    {
+      "id": 6,
+      "name": "Checkers",
+      "breed": "Bulldog",
+      "locationId": 1
+    },
+    {
+      "name": "Sawyer",
+      "breed": "Lollie",
+      "id": 7,
+      "locationId": 2
+    },
+    {
+      "name": "Gypsy",
+      "breed": "Miniature Schnauzer",
+      "id": 8,
+      "locationId": 1
+    },
+    {
+      "name": "Zipper",
+      "breed": "Terrier",
+      "locationId": 2,
+      "id": 9
+    },
+    {
+      "name": "Blue",
+      "breed": "Hound dog",
+      "locationId": 2,
+      "id": 10
+    },
+    {
+      "name": "Bugle",
+      "breed": "Beagle",
+      "locationId": 1,
+      "id": 11
+    }
+  ],
+  "treatments": [
+    {
+      "id": 1,
+      "animalId": 3,
+      "timestamp": 1634687829221,
+      "description": "Nails were trimmed"
+    }
+  ],
+  "animalCaretakers": [
+    {
+      "id": 1,
+      "animalId": 1,
+      "userId": 5
+    },
+    {
+      "id": 2,
+      "animalId": 5,
+      "userId": 9
+    },
+    {
+      "id": 3,
+      "animalId": 3,
+      "userId": 2
+    },
+    {
+      "id": 4,
+      "animalId": 4,
+      "userId": 14
+    },
+    {
+      "id": 5,
+      "animalId": 5,
+      "userId": 12
+    },
+    {
+      "id": 6,
+      "animalId": 6,
+      "userId": 7
+    },
+    {
+      "id": 6,
+      "animalId": 7,
+      "userId": 5
+    },
+    {
+      "id": 8,
+      "animalId": 8,
+      "userId": 1
+    },
+    {
+      "id": 9,
+      "animalId": 9,
+      "userId": 11
+    },
+    {
+      "id": 10,
+      "animalId": 10,
+      "userId": 4
+    },
+    {
+      "id": 11,
+      "animalId": 11,
+      "userId": 3
+    },
+    {
+      "id": 12,
+      "animalId": 3,
+      "userId": 14
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Jessica Younker",
+      "email": "jessica@younker.com",
+      "employee": true
+    },
+    {
+      "id": 2,
+      "name": "Jordan Nelson",
+      "email": "jordan@nelson.com",
+      "employee": true
+    },
+    {
+      "id": 3,
+      "name": "Zoe LeBlanc",
+      "email": "zoe@leblanc.com",
+      "employee": true
+    },
+    {
+      "name": "Meg Ducharme",
+      "email": "meg@ducharme.com",
+      "id": 4,
+      "employee": true
+    },
+    {
+      "name": "Hannah Hall",
+      "email": "hannah@hall.com",
+      "id": 5,
+      "employee": true
+    },
+    {
+      "name": "Emily Lemmon",
+      "email": "emily@lemmon.com",
+      "id": 6,
+      "employee": true
+    },
+    {
+      "name": "Jordan Castelloe",
+      "email": "jordan@castelloe.com",
+      "id": 7,
+      "employee": true
+    },
+    {
+      "name": "Leah Gwin",
+      "email": "leah@gwin.com",
+      "id": 8,
+      "employee": true
+    },
+    {
+      "name": "Caitlin Stein",
+      "email": "caitlin@stein.com",
+      "id": 9,
+      "employee": true
+    },
+    {
+      "name": "Greg Korte",
+      "email": "greg@korte.com",
+      "id": 10,
+      "employee": true
+    },
+    {
+      "name": "Charisse Lambert",
+      "email": "charisse@lambert.com",
+      "id": 11,
+      "employee": true
+    },
+    {
+      "name": "Madi Peper",
+      "email": "madi@peper.com",
+      "id": 12,
+      "employee": true
+    },
+    {
+      "name": "Jenna Solis",
+      "email": "jenna@solis.com",
+      "id": 14,
+      "employee": true
+    },
+    {
+      "id": 15,
+      "name": "Ryan Tanay",
+      "email": "ryan@tanay.com",
+      "employee": false
+    },
+    {
+      "id": 16,
+      "name": "Emma Beaton",
+      "email": "emma@beaton.com",
+      "employee": false
+    },
+    {
+      "id": 17,
+      "name": "Dani Adkins",
+      "email": "dani.adkins.com",
+      "employee": false
+    },
+    {
+      "id": 18,
+      "name": "Adam Oswalt",
+      "email": "adam@oswalt.com",
+      "employee": false
+    },
+    {
+      "id": 19,
+      "name": "Fletcher Bangs",
+      "email": "flangs@bangs.com",
+      "employee": false
+    },
+    {
+      "id": 20,
+      "name": "Angela Lee",
+      "email": "lee@lee.com",
+      "employee": false
+    },
+    {
+      "name": "mike mike",
+      "email": "m@m.com",
+      "employee": false,
+      "id": 21
+    },
+    {
+      "name": "Eric \"Macho Man\" Taylor",
+      "email": "macho@man.com",
+      "employee": true,
+      "id": 22
+    }
+  ],
+  "employeeLocations": [
+    {
+      "id": 1,
+      "userId": 1,
+      "locationId": 1
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "locationId": 2
+    },
+    {
+      "id": 15,
+      "userId": 2,
+      "locationId": 1
+    },
+    {
+      "id": 3,
+      "userId": 3,
+      "locationId": 1
+    },
+    {
+      "id": 4,
+      "userId": 4,
+      "locationId": 2
+    },
+    {
+      "id": 5,
+      "userId": 5,
+      "locationId": 2
+    },
+    {
+      "id": 6,
+      "userId": 6,
+      "locationId": 2
+    },
+    {
+      "id": 7,
+      "userId": 7,
+      "locationId": 1
+    },
+    {
+      "id": 8,
+      "userId": 8,
+      "locationId": 1
+    },
+    {
+      "id": 9,
+      "userId": 9,
+      "locationId": 2
+    },
+    {
+      "id": 10,
+      "userId": 10,
+      "locationId": 1
+    },
+    {
+      "id": 11,
+      "userId": 11,
+      "locationId": 1
+    },
+    {
+      "id": 12,
+      "userId": 12,
+      "locationId": 2
+    },
+    {
+      "id": 14,
+      "userId": 14,
+      "locationId": 2
+    }
+  ],
+  "locations": [
+    {
+      "id": 1,
+      "name": "Nashville North"
+    },
+    {
+      "id": 2,
+      "name": "Nashville South"
+    }
+  ],
+  "animalOwners": [
+    {
+      "id": 1,
+      "animalId": 1,
+      "userId": 15
+    },
+    {
+      "id": 3,
+      "animalId": 3,
+      "userId": 16
+    },
+    {
+      "id": 4,
+      "animalId": 4,
+      "userId": 17
+    },
+    {
+      "id": 5,
+      "animalId": 5,
+      "userId": 18
+    },
+    {
+      "id": 6,
+      "animalId": 5,
+      "userId": 19
+    },
+    {
+      "animalId": 6,
+      "userId": 20,
+      "id": 7
+    },
+    {
+      "animalId": 7,
+      "userId": 18,
+      "id": 8
+    },
+    {
+      "animalId": 8,
+      "userId": 17,
+      "id": 9
+    },
+    {
+      "animalId": 10,
+      "userId": 16,
+      "id": 10
+    },
+    {
+      "animalId": 10,
+      "userId": 15,
+      "id": 11
+    }
+  ]
+}

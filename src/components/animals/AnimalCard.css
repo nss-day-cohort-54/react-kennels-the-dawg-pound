@@ -1,0 +1,22 @@
+.animal {
+    margin: 0.33em 0;
+    width: 18em;
+}
+
+.animal--single {
+    width: 40em;
+    margin: 7em auto;
+}
+
+.animal:hover {
+    animation: jiggle 0.2s;
+    transition: .4s all ease;
+    z-index: 11;
+    box-shadow: 5px 15px 20px rgba(72, 62, 23, 0.4)
+}
+
+.animal__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

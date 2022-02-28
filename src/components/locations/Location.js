@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import locationImage from "./location.png"
 import "./Location.css"
 
+//creates jsx of location cards
 
 export default ({location}) => {
     return (
@@ -20,10 +21,10 @@ export default ({location}) => {
                 </h5>
             </section>
             <section>
-                Total animals
+                {/* Total animals total animals function */}
             </section>
             <section>
-                Total locations
+                Total locations 
             </section>
         </article>
     )

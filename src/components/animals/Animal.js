@@ -9,49 +9,65 @@ import "./AnimalCard.css"
 
 export const Animal = ({ animal, syncAnimals,
     showTreatmentHistory, owners }) => {
+    //set state of a boolean to control when to display details of an animal
     const [detailsOpen, setDetailsOpen] = useState(false)
+    //set set state for employee with a deault of false
     const [isEmployee, setAuth] = useState(false)
+    //set animalOwners state
     const [myOwners, setPeople] = useState([])
+    //set state for all animalOwners
     const [allOwners, registerOwners] = useState([])
+    //sets class names for html
     const [classes, defineClasses] = useState("card animal")
+    //destructuring to return current user obj
     const { getCurrentUser } = useSimpleAuth()
     const history = useHistory()
     const { animalId } = useParams()
+    //sets state for currentAnimal
     const { resolveResource, resource: currentAnimal } = useResourceResolver()
-
+    
+    
     useEffect(() => {
+        //returns a booleon for the employee property on users
         setAuth(getCurrentUser().employee)
+        //sets resource to animal object embeded with animalOwners and animalCaretakers
         resolveResource(animal, animalId, AnimalRepository.get)
     }, [])
 
+    //sets state for allOwners whenever owners is passed an a argument for the Animal function
     useEffect(() => {
         if (owners) {
             registerOwners(owners)
         }
     }, [owners])
 
+    //function that sets state for myOwners by expanding on animalOwners matching the animalOwner.animalId to animalId param
     const getPeople = () => {
         return AnimalOwnerRepository
             .getOwnersByAnimal(currentAnimal.id)
             .then(people => setPeople(people))
     }
 
+    //invokes getPeople when currentAnimal changes
     useEffect(() => {
         getPeople()
     }, [currentAnimal])
 
+    //listens to animalId to change and excutes code
     useEffect(() => {
         if (animalId) {
             defineClasses("card animal--single")
             setDetailsOpen(true)
-
+            //fetches expanded animalUsers by animalId
             AnimalOwnerRepository.getOwnersByAnimal(animalId).then(d => setPeople(d))
                 .then(() => {
+                    //sets state of allOwners to all users of that animalId that have an employee property of false
                     OwnerRepository.getAllCustomers().then(registerOwners)
                 })
         }
     }, [animalId])
 
+    //jsx containing all the html elements needed to display individuals cards for each animal
     return (
         <>
             <li className={classes}>

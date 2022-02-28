@@ -28,7 +28,7 @@ const useAPIAuth = () => {
 
     return { isAuthenticated, logout, login }
 }
-
+// exported but never imported anywhere
 export default useAPIAuth
 
 

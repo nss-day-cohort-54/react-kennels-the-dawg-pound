@@ -58,7 +58,8 @@ export default ({ employee }) => {
                         </>
                         : ""
                 }
-
+                
+                {/* write onCLick event */}
                 {
                     <button className="btn--fireEmployee" onClick={() => {}}>Fire</button>
                 }

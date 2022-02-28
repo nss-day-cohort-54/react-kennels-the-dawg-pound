@@ -11,6 +11,7 @@ export default ({ employee }) => {
     const [animalCount, setCount] = useState(0)
     const [location, markLocation] = useState({ name: "" })
     const [classes, defineClasses] = useState("card employee")
+    const [ users, changeUser]
     const { employeeId } = useParams()
     const { getCurrentUser } = useSimpleAuth()
     const { resolveResource, resource } = useResourceResolver()
@@ -21,12 +22,29 @@ export default ({ employee }) => {
         }
         resolveResource(employee, employeeId, EmployeeRepository.get)
     }, [])
-
+    
     useEffect(() => {
         if (resource?.employeeLocations?.length > 0) {
             markLocation(resource.employeeLocations[0])
         }
     }, [resource])
+    const currentUser = getCurrentUser()
+
+    const fireEmployee = (id) => {
+        fetch(`http://localhost:8088/serviceEmployees/${id}`, {
+            method: "DELETE"
+        })
+        //makes a copy of tickets with id's that do NOT 
+        //equal the id being passed through the function
+        const copy = users.filter(user => {
+            return user.id != id
+        })
+        changeUser(copy)
+    }
+
+
+
+    
 
     return (
         <article className={classes}>
@@ -60,9 +78,9 @@ export default ({ employee }) => {
                 }
                 
                 {/* write onCLick event */}
-                {
-                    <button className="btn--fireEmployee" onClick={() => {}}>Fire</button>
-                }
+                {currentUser.employee ? <button className="btn--fireEmployee" onClick={() => {
+                    fireEmployee(user.id)
+                }}>Fire</button> : "" }
 
             </section>
 

@@ -10,3 +10,4 @@ obj
 dist
 build
 deploy.sh
+package-lock.json

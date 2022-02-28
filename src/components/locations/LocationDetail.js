@@ -5,12 +5,14 @@ import { OxfordList } from "../../hooks/string/OxfordList.tsx"
 import LocationRepository from "../../repositories/LocationRepository"
 import "./Location.css"
 
-
+//should export location details in jsx format
+//default sets it as file name?
 export default () => {
     const [animals, setAnimals] = useState([])
     const [employees, updateEmployees] = useState([])
+    //sets animals and employee locations to locations
     const [location, set] = useState({animals:[], employeeLocations: []})
-
+    //matches url to current locationId
     const { locationId } = useParams()
 
 
@@ -24,7 +26,7 @@ export default () => {
                 <h1 className="display-4">{location.name}</h1>
                 <p className="lead detailCard__lead">
                     Currently caring for
-                    {
+                    {//a is animal, idx is index, arr is animals array
                         location.animals.map((a, idx, arr) =>
                             <span key={idx}>
                                 {idx > 0 && ", "}

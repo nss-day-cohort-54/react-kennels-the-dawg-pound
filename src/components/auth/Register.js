@@ -21,14 +21,20 @@ export const Register = () => {
             email: credentials.email,
             employee: credentials.employee
         }
-
+        // register() takes a user object as argument
+        // returns a fetch().then() chain of promises
+        // POSTs user object to database/users 
+        // base64 encodes the userObject and saves to localSotrage as the kennel_token
+        // is this the desired functionality? shouldn't only logging in set the kennel_token?
         register(newUser).then(() => {
             history.push("/")
         })
     }
 
     const handleUserInput = (event) => {
+        // adds the inputs to the state
         const copy = {...credentials}
+        // credentials/copy should have properties firstName, lastName, email, and employee
         copy[event.target.id] = event.target.value
         syncAuth(copy)
     }

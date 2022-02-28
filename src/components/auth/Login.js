@@ -5,16 +5,25 @@ import "./Login.css"
 
 
 const Login = () => {
+    // starts credentials state with blank emai and remember false
     const [credentials, syncAuth] = useState({
         email: "",
         remember: false
     })
+    // useSimpleAuth returns
+    // { isAuthenticated, logout, login, register, getCurrentUser }
     const { login } = useSimpleAuth()
     const history = useHistory()
 
     // Simplistic handler for login submit
+    // invoked when user clicks submit button on login form
+    // takes the click event as a parameter
     const handleLogin = (e) => {
         e.preventDefault()
+        // credentials.remember is a boolean
+        // if true pulls from localStorage, false pulls from sessionStorage
+        // sessionStorage is persistent only within a single tab or window
+        // localStorage is persisten for the browser
         const storage = credentials.remember ? localStorage : sessionStorage
 
         /*
@@ -22,6 +31,11 @@ const Login = () => {
             the customer enters into local storage.
         */
         console.log("*** Initiate authentication ***")
+        // login() is from useSimpleAuth
+        // potential error - login takes one parameter, email, in func def
+        // login() fetches the user from the api, base64 encodes the object
+        // and stores the encoding as the kennel_token in localStorage
+        // returns a boolean checking whether user exists in database
         login(credentials.email, credentials.userName, storage)
             .then(success => {
                 if (success) {
@@ -34,6 +48,7 @@ const Login = () => {
     const handleUserInput = (event) => {
         const copy = {...credentials}
         copy[event.target.id] = event.target.value
+        // syncAuth() is the state setting function for credentials
         syncAuth(copy)
     }
 
@@ -45,6 +60,7 @@ const Login = () => {
                     <h2 className="h3 mb-3 font-weight-normal">Please sign in</h2>
                     <fieldset>
                         <label htmlFor="inputEmail"> Email address </label>
+                        {/* this input handles saving the email input to state */}
                         <input type="email" onChange={handleUserInput}
                             id="email"
                             className="form-control"
@@ -52,6 +68,7 @@ const Login = () => {
                             required autoFocus />
                     </fieldset>
                     <fieldset>
+                        {/* this input sets wether localStorage or sessionStorage is used */}
                         <input
                             onChange={
                                 (event) => {

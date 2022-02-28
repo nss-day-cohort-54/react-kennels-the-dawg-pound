@@ -8,25 +8,35 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "./NavBar.css"
 
 
-
+//exports search bar
 export const NavBar = () => {
+    //creates searchTerms to save search field as state
     const [ searchTerms, setTerms ] = useState("")
-    const { isAuthenticated, logout, getCurrentUser } = useSimpleAuth()
-    const history = useHistory()
 
+    const { isAuthenticated, logout, getCurrentUser } = useSimpleAuth()
+    //when function happens, redirects to url with /search
+    //useHistory is a statehook
+    const history = useHistory()
+    //function that searches using e as a parameter
+    //e = event?
     const search = (e) => {
+        //if "enter" is pressed
         if (e.keyCode === 13) {
+            //gets terms from document
             const terms = document.querySelector("#searchTerms").value
+            //creates foundItems object with empty arrays
             const foundItems = {
                 animals: [],
                 locations: [],
                 employees: []
             }
-
+            
             fetch(`${Settings.remoteURL}/users?employee=true&name_like=${encodeURI(terms)}`)
                 .then(r => r.json())
                 .then(employees => {
+                    //sets foundItems.employees as employees
                     foundItems.employees = employees
+                    //return locations
                     return LocationRepository.search(terms)
                 })
                 .then(locations => {
@@ -42,6 +52,7 @@ export const NavBar = () => {
                     })
                 })
         }
+        //sets searchbar field as searchTerms
         else {
             setTerms(e.target.value)
         }

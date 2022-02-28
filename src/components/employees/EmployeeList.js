@@ -11,6 +11,8 @@ export default () => {
         () => {
             EmployeeRepository.getAll()
             // write .then()
+            .then((data) => {
+                setEmployees(data)})
         }, []
     )
 

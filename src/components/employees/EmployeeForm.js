@@ -7,6 +7,8 @@ export default (props) => {
     const [employee, updateEmployee] = useState()
     const [locations, defineLocations] = useState([])
 
+    // write useEffect() (s)
+
     const constructNewEmployee = () => {
         if (employee.locationId === 0) {
             window.alert("Please select a location")
@@ -25,6 +27,7 @@ export default (props) => {
         }
     }
 
+    // update employee to transient state after add new employee or assign a location
     const handleUserInput = (event) => {
         const copy = {...employee}
         copy[event.target.id] = event.target.value
@@ -69,6 +72,7 @@ export default (props) => {
                         }
                     }
                     className="btn btn-primary"> Save Employee </button>
+                    {/* write onClick event */}
             </form>
         </>
     )

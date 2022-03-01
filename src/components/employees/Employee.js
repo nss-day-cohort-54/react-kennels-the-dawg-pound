@@ -7,7 +7,7 @@ import person from "./person.png"
 import "./Employee.css"
 
 
-export default ({ employee }) => {
+export default ({ employee, setEmployees }) => {
     const [animalCount, setCount] = useState(0)
     const [location, markLocation] = useState({ name: "" })
     const [classes, defineClasses] = useState("card employee")
@@ -31,7 +31,7 @@ export default ({ employee }) => {
     const currentUser = getCurrentUser()
 
     const fireEmployee = (id) => {
-        fetch(`http://localhost:8088/serviceEmployees/${id}`, {
+        fetch(`http://localhost:8088/users/${id}`, {
             method: "DELETE"
         })
         //makes a copy of tickets with id's that do NOT 
@@ -39,7 +39,7 @@ export default ({ employee }) => {
         const copy = users.filter(user => {
             return user.id != id
         })
-        changeUser(copy)
+        setEmployees(copy)
     }
 
 
@@ -86,6 +86,7 @@ export default ({ employee }) => {
                 {/* write onCLick event */}
                 {currentUser.employee ? <button className="btn--fireEmployee" onClick={() => {
                     fireEmployee(resource.id)
+                        
                 }}>Fire</button> : "" }
 
             </section>

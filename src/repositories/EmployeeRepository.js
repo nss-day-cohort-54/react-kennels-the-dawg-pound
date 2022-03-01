@@ -1,7 +1,7 @@
 import Settings from "./Settings"
 import { fetchIt } from "./Fetch"
 
-export default {
+export default { 
     async get(id) {
         const userLocations = await fetchIt(`${Settings.remoteURL}/employeeLocations?userId=${id}&_expand=location&_expand=user`)
         return await fetchIt(`${Settings.remoteURL}/animalCaretakers?userId=${id}&_expand=animal`)
@@ -14,6 +14,7 @@ export default {
     },
     async delete(id) {
         return await fetchIt(`${Settings.remoteURL}/users/${id}`, "DELETE")
+       
     },
     async addEmployee(employee) {
         return await fetchIt(`${Settings.remoteURL}/users`, "POST", JSON.stringify(employee))

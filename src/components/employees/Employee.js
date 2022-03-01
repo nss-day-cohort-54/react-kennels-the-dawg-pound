@@ -30,20 +30,6 @@ export default ({ employee, setEmployees, employees }) => {
     }, [resource])
     const currentUser = getCurrentUser()
 
-    const fireEmployee = (id) => {
-        fetch(`http://localhost:8088/users/${id}`, {
-            method: "DELETE"
-        })
-        //makes a copy of tickets with id's that do NOT 
-        //equal the id being passed through the function
-        const copy = employees.filter(employee => {
-            return employee.id != id
-        })
-        setEmployees(copy)
-    }
-
-
-
     
 
     useEffect(() => {
@@ -85,7 +71,11 @@ export default ({ employee, setEmployees, employees }) => {
                 
                 {/* write onCLick event */}
                 {currentUser.employee ? <button className="btn--fireEmployee" onClick={() => {
-                    fireEmployee(resource.id)
+                    EmployeeRepository.delete(resource.id)
+                    .then (() => {const copy = employees.filter(employee => {
+                        return employee.id != resource.id
+                    })
+                    setEmployees(copy)})
                         
                 }}>Fire</button> : "" }
 

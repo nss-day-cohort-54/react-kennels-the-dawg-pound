@@ -70,7 +70,7 @@ export default ({ employee, setEmployees, employees }) => {
                 }
                 
                 {/* write onCLick event */}
-                {currentUser.employee ? <button className="btn--fireEmployee" id={employee.id} onClick={(event) => {
+                {currentUser.employee ? <button className="btn--fireEmployee" id={resource.id} onClick={(event) => {
                     if (currentUser.id === parseInt(event.target.id)) {
                         window.alert("You cannot fire yourself. Please see management for assistance")
 

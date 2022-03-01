@@ -99,7 +99,10 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                         <section>
                             <h6>Caretaker(s)</h6>
                             <span className="small">
-                                
+                                {/* 
+                                    if currentAnimal has caretakers, iterates over caretakers
+                                    and displayers each caretaker's name
+                                */}
                                 {currentAnimal.animalCaretakers?.map(caretaker => {
                                     return <div key={`user-${caretaker.id}`}>{caretaker.user.name}</div>
                                 })}

@@ -7,7 +7,7 @@ import person from "./person.png"
 import "./Employee.css"
 
 
-export default ({ employee, setEmployees }) => {
+export default ({ employee, setEmployees, employees }) => {
     const [animalCount, setCount] = useState(0)
     const [location, markLocation] = useState({ name: "" })
     const [classes, defineClasses] = useState("card employee")
@@ -36,8 +36,8 @@ export default ({ employee, setEmployees }) => {
         })
         //makes a copy of tickets with id's that do NOT 
         //equal the id being passed through the function
-        const copy = users.filter(user => {
-            return user.id != id
+        const copy = employees.filter(employee => {
+            return employee.id != id
         })
         setEmployees(copy)
     }

@@ -3,6 +3,9 @@ import { fetchIt } from "./Fetch"
 import LocationRepository from "./LocationRepository"
 import AnimalRepository from "./AnimalRepository"
 
+// function to expand the location and animal information for a user
+// locations should be a array of all locations
+// animals should be an array of all animals
 const createUser = (user, locations, animals) => {
     user.locations = user.employeeLocations.map(employeeLocation => {
         employeeLocation.location = locations.find(location => location.id === employeeLocation.locationId)

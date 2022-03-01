@@ -11,7 +11,7 @@ export default ({ employee }) => {
     const [animalCount, setCount] = useState(0)
     const [location, markLocation] = useState({ name: "" })
     const [classes, defineClasses] = useState("card employee")
-    const [ users, changeUser]
+    const [ users, changeUser] = useState([])
     const { employeeId } = useParams()
     const { getCurrentUser } = useSimpleAuth()
     const { resolveResource, resource } = useResourceResolver()
@@ -85,7 +85,7 @@ export default ({ employee }) => {
                 
                 {/* write onCLick event */}
                 {currentUser.employee ? <button className="btn--fireEmployee" onClick={() => {
-                    fireEmployee(user.id)
+                    fireEmployee(resource.id)
                 }}>Fire</button> : "" }
 
             </section>

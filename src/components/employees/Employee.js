@@ -25,7 +25,7 @@ export default ({ employee, setEmployees, employees }) => {
     
     useEffect(() => {
         if (resource?.employeeLocations?.length > 0) {
-            markLocation(resource.employeeLocations[0])
+            markLocation(resource.locations[0].location)
         }
     }, [resource])
     const currentUser = getCurrentUser()
@@ -63,7 +63,7 @@ export default ({ employee, setEmployees, employees }) => {
                                 Caring for {animalCount} animals
                             </section>
                             <section>
-                                Working at unknown location
+                                Working at {location.name} location
                             </section>
                         </>
                         : ""

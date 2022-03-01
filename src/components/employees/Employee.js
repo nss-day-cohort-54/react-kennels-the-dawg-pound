@@ -70,12 +70,18 @@ export default ({ employee, setEmployees, employees }) => {
                 }
                 
                 {/* write onCLick event */}
-                {currentUser.employee ? <button className="btn--fireEmployee" onClick={() => {
-                    EmployeeRepository.delete(resource.id)
-                    .then (() => {const copy = employees.filter(employee => {
-                        return employee.id != resource.id
-                    })
-                    setEmployees(copy)})
+                {currentUser.employee ? <button className="btn--fireEmployee" id={employee.id} onClick={(event) => {
+                    if (currentUser.id === parseInt(event.target.id)) {
+                        window.alert("You cannot fire yourself. Please see management for assistance")
+
+                    } else {
+
+                        EmployeeRepository.delete(resource.id)
+                        .then (() => {const copy = employees.filter(employee => {
+                            return employee.id != resource.id
+                        })
+                        setEmployees(copy)})
+                    }
                         
                 }}>Fire</button> : "" }
 

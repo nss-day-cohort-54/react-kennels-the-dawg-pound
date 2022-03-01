@@ -19,7 +19,9 @@ const createUser = (user, locations, animals) => {
     return user
 }
 
-export default { 
+
+
+export default {
     async get(id) {
         const locations = await LocationRepository.getAll()
         const animals = await AnimalRepository.getAll()
@@ -31,8 +33,36 @@ export default {
             })
     },
     async delete(id) {
+        
         return await fetchIt(`${Settings.remoteURL}/users/${id}`, "DELETE")
-       
+            .then(() => {
+                //get caretakers
+                const careTakers = fetchIt(`${Settings.remoteURL}/animalCaretakers`)
+                return careTakers
+            })
+            .then((careTakers) => {
+                //match id against caretakers.userId
+                const matchedCareTakers = careTakers.filter(careTaker => careTaker.userId === id)
+                //delete matching caretaker objects
+                for (const careTaker of matchedCareTakers) {
+                    fetchIt(`${Settings.remoteURL}/animalCaretakers/${careTaker.id}`, "DELETE")
+                }
+            })
+            .then(() => {
+                //get employeeLocations
+                const employeeLocations = fetchIt(`${Settings.remoteURL}/employeeLocations`)
+                return employeeLocations
+            })
+            .then((employeeLocations) => {
+                //match id against employeeLocations
+                const matchedEmployeeLocations = employeeLocations.filter(employeeLocation => employeeLocation.userId === id)
+                //delete matching employeeLocations
+                for (const employeeLocation of matchedEmployeeLocations) {
+                    fetchIt(`${Settings.remoteURL}/employeeLocations/${employeeLocation.id}`, "DELETE")
+                }
+
+            })
+
     },
     async addEmployee(employee) {
         return await fetchIt(`${Settings.remoteURL}/users`, "POST", JSON.stringify(employee))

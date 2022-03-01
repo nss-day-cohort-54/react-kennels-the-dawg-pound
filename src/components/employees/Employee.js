@@ -7,10 +7,11 @@ import person from "./person.png"
 import "./Employee.css"
 
 
-export default ({ employee }) => {
+export default ({ employee, setEmployees, employees }) => {
     const [animalCount, setCount] = useState(0)
     const [location, markLocation] = useState({ name: "" })
     const [classes, defineClasses] = useState("card employee")
+    const [ users, changeUser] = useState([])
     const { employeeId } = useParams()
     const { getCurrentUser } = useSimpleAuth()
     const { resolveResource, resource } = useResourceResolver()
@@ -21,12 +22,15 @@ export default ({ employee }) => {
         }
         resolveResource(employee, employeeId, EmployeeRepository.get)
     }, [])
-
+    
     useEffect(() => {
         if (resource?.employeeLocations?.length > 0) {
             markLocation(resource.employeeLocations[0])
         }
     }, [resource])
+    const currentUser = getCurrentUser()
+
+    
 
     useEffect(() => {
         if (resource?.animals?.length > 0) {
@@ -66,9 +70,14 @@ export default ({ employee }) => {
                 }
                 
                 {/* write onCLick event */}
-                {
-                    <button className="btn--fireEmployee" onClick={() => {}}>Fire</button>
-                }
+                {currentUser.employee ? <button className="btn--fireEmployee" onClick={() => {
+                    EmployeeRepository.delete(resource.id)
+                    .then (() => {const copy = employees.filter(employee => {
+                        return employee.id != resource.id
+                    })
+                    setEmployees(copy)})
+                        
+                }}>Fire</button> : "" }
 
             </section>
 

@@ -85,6 +85,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                                     }
                                     else {
                                         history.push(`/animals/${currentAnimal.id}`)
+                                    
                                     }
                                 }}> {currentAnimal.name} </button>
                         </h5>
@@ -152,12 +153,12 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                         </section>
 
                         {
-                            isEmployee
-                                ? <button className="btn btn-warning mt-3 form-control small" onClick={() =>
+                            isEmployee ? <button className="btn btn-warning mt-3 form-control small" onClick={() =>
                                     AnimalOwnerRepository
                                         .removeOwnersAndCaretakers(currentAnimal.id)
-                                        .then(() => {}) // Remove animal
-                                        .then(() => {}) // Get all animals
+                                        .then(() => {AnimalRepository.delete(currentAnimal.id)}) // Remove animal
+                                        .then(() => {AnimalRepository.getAll()}) // Get all animals
+                                        .then(() => {debugger})
                                 }>Discharge</button>
                                 : ""
                         }

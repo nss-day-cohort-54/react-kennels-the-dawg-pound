@@ -25,7 +25,7 @@ export default ({ employee, setEmployees, employees }) => {
     
     useEffect(() => {
         if (resource?.employeeLocations?.length > 0) {
-            markLocation(resource.employeeLocations[0])
+            markLocation(resource.locations[0].location)
         }
     }, [resource])
     const currentUser = getCurrentUser()
@@ -63,14 +63,14 @@ export default ({ employee, setEmployees, employees }) => {
                                 Caring for {animalCount} animals
                             </section>
                             <section>
-                                Working at unknown location
+                                Working at {location.name} location
                             </section>
                         </>
                         : ""
                 }
                 
                 {/* write onCLick event */}
-                {currentUser.employee ? <button className="btn--fireEmployee" id={employee.id} onClick={(event) => {
+                {currentUser.employee ? <button className="btn--fireEmployee" id={resource.id} onClick={(event) => {
                     if (currentUser.id === parseInt(event.target.id)) {
                         window.alert("You cannot fire yourself. Please see management for assistance")
 

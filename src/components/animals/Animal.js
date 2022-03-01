@@ -109,6 +109,12 @@ export const Animal = ({ animal, syncAnimals,
                                 Owned by unknown
                             </span>
 
+
+                            <h6>Add Treatment</h6>
+                            <span className="small">
+                                Owned by unknown
+                            </span>
+
                             {
                                 myOwners.length < 2
                                     ? <select defaultValue=""

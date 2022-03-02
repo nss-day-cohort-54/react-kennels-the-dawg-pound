@@ -12,6 +12,7 @@ import LocationRepository from "../../repositories/LocationRepository";
 export default ({ employee, setEmployees, employees }) => {
     const [animalCount, setCount] = useState(0)
     const [location, markLocation] = useState({ name: "" })
+    const [reassignedEmployee, updateEmployee] = useState({})
     const [updatedLocation, newLocation] = useState({})
     const [classes, defineClasses] = useState("card employee")
     //const [employeeLocations, setEmployeeLocations] = useState([])
@@ -21,7 +22,7 @@ export default ({ employee, setEmployees, employees }) => {
     const { employeeId } = useParams()
     const { getCurrentUser } = useSimpleAuth()
     const { resolveResource, resource: currentEmployee } = useResourceResolver()
-
+    const currentUser = getCurrentUser()
     useEffect(() => {
         if (employeeId) {
             defineClasses("card employee--single")
@@ -31,20 +32,18 @@ export default ({ employee, setEmployees, employees }) => {
         } else {
             resolveResource(employee, employeeId, EmployeeRepository.get)
         }
-    }, [])
+    }, [reassignedEmployee])
 
     useEffect(() => {
         if (currentEmployee?.employeeLocations?.length > 0) {
             markLocation(currentEmployee.locations[0].location)
         }
-    }, [currentEmployee])
-    const currentUser = getCurrentUser()
-
-    useEffect(() => {
         if (currentEmployee?.animals?.length > 0) {
             setCount(currentEmployee.animals.length)
         }
     }, [currentEmployee])
+    
+
 
     const handleUserInput = (event) => {
         const loc =  parseInt(event.target.value)
@@ -105,10 +104,11 @@ return (
                                                 window.alert("Only employees may reassign employees")
                                             } else {
                                                 EmployeeRepository.reassignEmployee(currentEmployee, updatedLocation)
+                                                    .then(updateEmployee)
                                             }
                                         }
                                     }
-                                    className="btn btn-primary"> Save Employee </button>
+                                    className="btn btn-primary"> Reassign Employee </button>
                                 {/* write onClick event */}
                             </form>
                         </section>

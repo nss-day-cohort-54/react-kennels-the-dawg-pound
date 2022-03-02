@@ -76,14 +76,15 @@ export default {
     },
     async reassignEmployee(currentEmployee, updatedLocation) {
         // needs a function to delete the employee location relation
-        const employeeLocations = await EmployeeRepository.getEmpoyeeLocations(currentEmployee.id)
+        const employeeLocations = await fetchIt(`${Settings.remoteURL}/employeeLocations?userId=${currentEmployee.id}`)
         for (const employeeLocation of employeeLocations) {
-            await EmployeeRepository.deleteAssignment(employeeLocation.id)
+            await fetchIt(`${Settings.remoteURL}/employeeLocations/${employeeLocation.id}`, "DELETE")
         }
-        return await EmployeeRepository.assignEmployee({
+        const newRel = {
             userId: currentEmployee.id,
             locationId: updatedLocation
-        })  
+        }
+        return await fetchIt(`${Settings.remoteURL}/employeeLocations`, "POST", JSON.stringify(newRel))
     },
     async getAll() {
         const locations = await LocationRepository.getAll()

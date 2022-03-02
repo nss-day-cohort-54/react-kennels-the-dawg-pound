@@ -1,6 +1,7 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useEffect } from "react"
 import "./AnimalForm.css"
 import AnimalRepository from "../../repositories/AnimalRepository";
+import EmployeeRepository from "../../repositories/EmployeeRepository";
 
 
 export default (props) => {
@@ -11,6 +12,22 @@ export default (props) => {
     const [employeeId, setEmployeeId] = useState(0)
     const [saveEnabled, setEnabled] = useState(false)
 
+    useEffect(
+        () => {
+            EmployeeRepository.getAll()
+            .then((data) => {
+                setEmployees(data)})
+        }, []
+    )
+
+    useEffect(
+        () => {
+            AnimalRepository.getAll()
+            .then((data) => {
+                setAnimals(data)})
+        }, []
+    )
+
     const constructNewAnimal = evt => {
         evt.preventDefault()
         const eId = parseInt(employeeId)
@@ -19,14 +36,21 @@ export default (props) => {
             window.alert("Please select a caretaker")
         } else {
             const emp = employees.find(e => e.id === eId)
+
             const animal = {
                 name: animalName,
                 breed: breed,
-                employeeId: eId,
-                locationId: parseInt(emp.locationId)
+                locationId: parseInt(emp.employeeLocations[0].locationId)
             }
-
+            
             AnimalRepository.addAnimal(animal)
+            // .then(() => {
+            //     const animalCaretaker = {
+            //         employeeId: eId,
+            //         animalId: 
+            //     }
+                
+            //     })
                 .then(() => setEnabled(true))
                 .then(() => props.history.push("/animals"))
         }

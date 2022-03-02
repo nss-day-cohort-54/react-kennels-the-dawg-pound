@@ -71,7 +71,7 @@ export default {
     async getAll() {
         const locations = await LocationRepository.getAll()
         const animals = await AnimalRepository.getAll()
-        return await fetchIt(`${Settings.remoteURL}/users?employee=true_embed=employeeLocations&_embed=animalCaretakers`)
+        return await fetchIt(`${Settings.remoteURL}/users?employee=true&_embed=employeeLocations&_embed=animalCaretakers`)
             .then(users => {
                 return users.map(user => {
                     user = createUser({...user}, locations, animals)

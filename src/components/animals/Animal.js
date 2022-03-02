@@ -90,6 +90,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
         }
     }, [animalId])
 
+
     //jsx containing all the html elements needed to display individuals cards for each animal
     return (
         <>
@@ -109,6 +110,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                                     }
                                     else {
                                         history.push(`/animals/${currentAnimal.id}`)
+                                    
                                     }
                                 }}> {currentAnimal.name} </button>
                         </h5>
@@ -198,18 +200,11 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                         </section>
 
                         {
-                            isEmployee
-                                ? <button className="btn btn-warning mt-3 form-control small" onClick={handleTreatment}>Add Treatment</button>
-                                : ""
-                        }
-
-                        {
-                            isEmployee
-                                ? <button className="btn btn-warning mt-3 form-control small" onClick={() =>
+                            isEmployee ? <button className="btn btn-warning mt-3 form-control small" onClick={() =>
                                     AnimalOwnerRepository
                                         .removeOwnersAndCaretakers(currentAnimal.id)
-                                        .then(() => { }) // Remove animal
-                                        .then(() => { }) // Get all animals
+                                        .then(() => {AnimalRepository.delete(currentAnimal.id)}) // Remove animal
+                                        .then(() => {syncAnimals()}) // Get all animals
                                 }>Discharge</button>
                                 : ""
                         }

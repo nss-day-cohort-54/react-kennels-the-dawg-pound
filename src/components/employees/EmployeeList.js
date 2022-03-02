@@ -16,12 +16,13 @@ export default () => {
         }, []
     )
 
+    const employeeOnly = emps.filter(emp => emp.employee === true)
+
     return (
         <>
             <div className="employees">
                 {
-                    emps.map(employee => <Employee key={employee.id} employee={employee} setEmployees={setEmployees} employees={emps}/>)
-                    // complete above HTML
+                    employeeOnly.map(employee => <Employee key={employee.id} employee={employee} setEmployees={setEmployees} employees={employeeOnly}/>)
                 }
             </div>
         </>

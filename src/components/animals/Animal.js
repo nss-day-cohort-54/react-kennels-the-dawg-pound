@@ -24,6 +24,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
     const { animalId } = useParams()
     //sets state for currentAnimal
     const { resolveResource, resource: currentAnimal } = useResourceResolver()
+
     
     
     useEffect(() => {
@@ -65,6 +66,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                 })
         }
     }, [animalId])
+
 
     //jsx containing all the html elements needed to display individuals cards for each animal
     return (
@@ -157,8 +159,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                                     AnimalOwnerRepository
                                         .removeOwnersAndCaretakers(currentAnimal.id)
                                         .then(() => {AnimalRepository.delete(currentAnimal.id)}) // Remove animal
-                                        .then(() => {AnimalRepository.getAll()}) // Get all animals
-                                        .then(() => {debugger})
+                                        .then(() => {syncAnimals()}) // Get all animals
                                 }>Discharge</button>
                                 : ""
                         }

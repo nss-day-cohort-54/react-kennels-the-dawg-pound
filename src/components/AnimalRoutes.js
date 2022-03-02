@@ -7,6 +7,10 @@ import { AnimalListComponent } from "./animals/AnimalList"
 export default () => {
     return (
         <>
+            {/* 
+                when url path is /animals
+                AnimalListComponent loads with no passed props
+            */}
             <Route exact path="/animals">
                 <AnimalListComponent />
             </Route>

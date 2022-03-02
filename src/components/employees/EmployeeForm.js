@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 import EmployeeRepository from "../../repositories/EmployeeRepository";
 import "./EmployeeForm.css"
 
@@ -24,6 +25,7 @@ export default (props) => {
                 })
             })
             .then(() => props.history.push("/employees"))
+            
         }
     }
 
@@ -34,6 +36,8 @@ export default (props) => {
         updateEmployee(copy)
     }
 
+
+    
 
     return (
         <>

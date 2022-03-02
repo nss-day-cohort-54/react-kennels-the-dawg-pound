@@ -7,7 +7,7 @@ export default () => {
     const location = useLocation()
 
     const displayAnimals = () => {
-        if (location.state?.animals.length) {
+        if (location.state?.animals.length && location.state?.isEmployee) {
             return (
                 <React.Fragment>
                     <h2>Matching Animals</h2>

@@ -126,6 +126,11 @@
       "userId": 3
     },
     {
+      "id": 11,
+      "animalId": 11,
+      "userId": 22
+    },
+    {
       "id": 12,
       "animalId": 3,
       "userId": 14

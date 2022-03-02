@@ -28,7 +28,8 @@ export const NavBar = () => {
             const foundItems = {
                 animals: [],
                 locations: [],
-                employees: []
+                employees: [],
+                isEmployee: false
             }
             
             fetch(`${Settings.remoteURL}/users?employee=true&name_like=${encodeURI(terms)}`)
@@ -45,10 +46,12 @@ export const NavBar = () => {
                 })
                 .then(animals => {
                     foundItems.animals = animals
+                    let copy = {...foundItems}
+                    copy.isEmployee = getCurrentUser().employee
                     setTerms("")
                     history.push({
                         pathname: "/search",
-                        state: foundItems
+                        state: copy
                     })
                 })
         }

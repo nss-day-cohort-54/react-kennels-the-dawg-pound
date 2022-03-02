@@ -9,11 +9,10 @@ import Settings from "../../repositories/Settings";
 import "./AnimalCard.css"
 import { fetchIt } from "../../repositories/Fetch";
 
-export const Animal = ({ animal, syncAnimals,
-    showTreatmentHistory, owners }) => {
+export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) => {
     const currentTime = new Date()
     const history = useHistory()
-
+    
     //set state of a boolean to control when to display details of an animal
     const [detailsOpen, setDetailsOpen] = useState(false)
     //set set state for employee with a deault of false
@@ -124,7 +123,13 @@ export const Animal = ({ animal, syncAnimals,
                         <section>
                             <h6>Caretaker(s)</h6>
                             <span className="small">
-                                Unknown
+                                {/* 
+                                    if currentAnimal has caretakers, iterates over caretakers
+                                    and displayers each caretaker's name
+                                */}
+                                {currentAnimal.animalCaretakers?.map(caretaker => {
+                                    return <div key={`user-${caretaker.id}`}>{caretaker.user.name}</div>
+                                })}
                             </span>
 
 

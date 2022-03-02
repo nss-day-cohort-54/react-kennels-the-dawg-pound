@@ -19,7 +19,10 @@ export const fetchIt = (url, method = "GET", body = null) => {
         options.body = body
     }
 
-    return fetch(url, options).then(r => r.json())
+    return fetch(url, options).then(r => r.json()).then(response => {
+        
+        return response
+    })
 }
 
 export const request = {

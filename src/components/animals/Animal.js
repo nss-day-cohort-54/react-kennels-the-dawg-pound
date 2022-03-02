@@ -5,9 +5,14 @@ import AnimalOwnerRepository from "../../repositories/AnimalOwnerRepository";
 import OwnerRepository from "../../repositories/OwnerRepository";
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 import useResourceResolver from "../../hooks/resource/useResourceResolver";
+import Settings from "../../repositories/Settings";
 import "./AnimalCard.css"
+import { fetchIt } from "../../repositories/Fetch";
 
 export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) => {
+    const currentTime = new Date()
+    const history = useHistory()
+    
     //set state of a boolean to control when to display details of an animal
     const [detailsOpen, setDetailsOpen] = useState(false)
     //set set state for employee with a deault of false
@@ -20,19 +25,37 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
     const [classes, defineClasses] = useState("card animal")
     //destructuring to return current user obj
     const { getCurrentUser } = useSimpleAuth()
-    const history = useHistory()
-    const { animalId } = useParams()
+    let { animalId } = useParams()
     //sets state for currentAnimal
-    const { resolveResource, resource: currentAnimal } = useResourceResolver()
+    let { resolveResource, resource: currentAnimal } = useResourceResolver()
+    const [treatment, setTreatment] = useState({ description: "" })
 
-    
-    
+    const handleTreatment = (event) => {
+        event.preventDefault()
+
+        const newTreatment = {
+            animalId: currentAnimal.id,
+            timestamp: currentTime.getTime(),
+            description: treatment.description
+        }
+
+        fetchIt(`${Settings.remoteURL}/treatments`, "POST", JSON.stringify(newTreatment))
+        .then((setTreatment({ description: "" })))
+        
+    }
+
     useEffect(() => {
         //returns a booleon for the employee property on users
         setAuth(getCurrentUser().employee)
         //sets resource to animal object embeded with animalOwners and animalCaretakers
         resolveResource(animal, animalId, AnimalRepository.get)
     }, [])
+
+    useEffect(() => {
+        animalId = currentAnimal.id
+        currentAnimal = {}
+        resolveResource(currentAnimal, animalId, AnimalRepository.get)
+    }, [treatment])
 
     //sets state for allOwners whenever owners is passed an a argument for the Animal function
     useEffect(() => {
@@ -117,12 +140,13 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                                 Owned by unknown
                             </span>
 
+
                             {
                                 myOwners.length < 2
                                     ? <select defaultValue=""
                                         name="owner"
                                         className="form-control small"
-                                        onChange={() => {}} >
+                                        onChange={() => { }} >
                                         <option value="">
                                             Select {myOwners.length === 1 ? "another" : "an"} owner
                                         </option>
@@ -131,6 +155,27 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                                         }
                                     </select>
                                     : null
+                            }
+
+                            
+                            {
+                                isEmployee
+                                       ?<form>
+                                        <label for="treatment">Treatment: </label>
+                                        <input
+                                        required autoFocus
+                                        type="text"
+                                        className="form-control small"
+                                        placeholder="Add treatment"
+                                        onChange={
+                                            (evt) => {
+                                                const copy = { ...treatment }
+                                                copy.description = evt.target.value
+                                                setTreatment(copy)
+                                            }}
+                                            value={treatment.description} />
+                                        </form>
+                                    : ""                       
                             }
 
 

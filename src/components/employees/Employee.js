@@ -8,11 +8,13 @@ import "./Employee.css"
 import LocationRepository from "../../repositories/LocationRepository";
 
 
+
 export default ({ employee, setEmployees, employees }) => {
     const [animalCount, setCount] = useState(0)
     const [location, markLocation] = useState({ name: "" })
     const [updatedLocation, newLocation] = useState({})
     const [classes, defineClasses] = useState("card employee")
+    //const [employeeLocations, setEmployeeLocations] = useState([])
     const [locations, defineLocations] = useState([])
     const [users, changeUser] = useState([])
     const history = useHistory()
@@ -47,13 +49,6 @@ export default ({ employee, setEmployees, employees }) => {
     const handleUserInput = (event) => {
         const loc =  parseInt(event.target.value)
         newLocation(loc)
-    }
-
-    const assignEmployee = () => {
-        EmployeeRepository.assignEmployee({
-            userId: employee.id,
-            locationId: parseInt(newEmployee.location)
-        })
     }
 
 return (
@@ -109,7 +104,7 @@ return (
                                             if (!getCurrentUser().employee) {
                                                 window.alert("Only employees may reassign employees")
                                             } else {
-                                                assignEmployee()
+                                                EmployeeRepository.reassignEmployee(currentEmployee, updatedLocation)
                                             }
                                         }
                                     }

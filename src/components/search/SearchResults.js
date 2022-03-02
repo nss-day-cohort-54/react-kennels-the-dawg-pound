@@ -1,5 +1,8 @@
 import React from "react"
 import { useLocation } from "react-router-dom";
+import { Animal } from "../animals/Animal";
+import Employee from "../employees/Employee";
+import Location from "../locations/Location";
 import "./SearchResults.css"
 
 
@@ -12,7 +15,10 @@ export default () => {
                 <React.Fragment>
                     <h2>Matching Animals</h2>
                     <section className="animals">
-                        Display matching animals
+
+                        {location.state.animals.map(anml => {
+                            return <Animal key={`animal--${anml.id}`} animal={anml} />
+                        })}
                     </section>
                 </React.Fragment>
             )
@@ -25,7 +31,9 @@ export default () => {
                 <React.Fragment>
                     <h2>Matching Employees</h2>
                     <section className="employees">
-                        Display matching employees
+                    {location.state.employees.map(employee => {
+                            return <Employee key={`employee--${employee.id}`} employee={employee} />
+                        })}
                     </section>
                 </React.Fragment>
             )
@@ -38,7 +46,9 @@ export default () => {
                 <React.Fragment>
                     <h2>Matching Locations</h2>
                     <section className="locations">
-                        Display matching locations
+                    {location.state.locations.map(location => {
+                            return <Location key={`employee--${location.id}`} location={location} />
+                        })}
                     </section>
                 </React.Fragment>
             )

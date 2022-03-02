@@ -13,7 +13,7 @@ export default ({ employee, setEmployees, employees }) => {
     const [animalCount, setCount] = useState(0)
     const [location, markLocation] = useState({ name: "" })
     const [reassignedEmployee, updateEmployee] = useState({})
-    const [updatedLocation, newLocation] = useState({})
+    const [updatedLocation, newLocation] = useState(0)
     const [classes, defineClasses] = useState("card employee")
     //const [employeeLocations, setEmployeeLocations] = useState([])
     const [locations, defineLocations] = useState([])
@@ -46,7 +46,7 @@ export default ({ employee, setEmployees, employees }) => {
 
 
     const handleUserInput = (event) => {
-        const loc =  parseInt(event.target.value)
+        const loc = parseInt(event.target.value)
         newLocation(loc)
     }
 
@@ -103,8 +103,12 @@ return (
                                             if (!getCurrentUser().employee) {
                                                 window.alert("Only employees may reassign employees")
                                             } else {
-                                                EmployeeRepository.reassignEmployee(currentEmployee, updatedLocation)
-                                                    .then(updateEmployee)
+                                                if(updatedLocation && updatedLocation != 0) {
+                                                    EmployeeRepository.reassignEmployee(currentEmployee, updatedLocation)
+                                                        .then(updateEmployee)
+                                                } else {
+                                                    window.alert("Please select a location")
+                                                }
                                             }
                                         }
                                     }

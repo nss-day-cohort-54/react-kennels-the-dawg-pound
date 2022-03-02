@@ -21,7 +21,6 @@ export default () => {
             <div className="employees">
                 {
                     emps.map(employee => <Employee key={employee.id} employee={employee} setEmployees={setEmployees} employees={emps}/>)
-                    // complete above HTML
                 }
             </div>
         </>

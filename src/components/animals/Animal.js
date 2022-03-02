@@ -167,6 +167,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                                         <input
                                             required autoFocus
                                             type="text"
+                                            name="treatment"
                                             className="form-control small"
                                             placeholder="Add treatment"
                                             onChange={

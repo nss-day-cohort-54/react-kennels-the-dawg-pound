@@ -20,7 +20,6 @@ const createUser = (user, locations, animals) => {
 }
 
 
-
 export default {
     async get(id) {
         const locations = await LocationRepository.getAll()
@@ -28,7 +27,6 @@ export default {
         return await fetchIt(`${Settings.remoteURL}/users/${id}?_embed=employeeLocations&_embed=animalCaretakers`)
             .then(user => {
                 user = createUser({...user}, locations, animals)
-                debugger
                 return user
             })
     },

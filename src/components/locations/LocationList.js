@@ -4,16 +4,24 @@ import LocationRepository from "../../repositories/LocationRepository";
 import Location from "./Location"
 import "./LocationList.css"
 
+
 //exports location list
 export const LocationList = () => {
     //creates state variable for locations
     const [ locations, updateLocations ] = useState([])
-    //not sure what getAll does
-    //dont think this is setting locations array in state
-    useEffect(() => {
-        LocationRepository.getAll()
-    }, [])
-    //returns jsx of location cards using Locations function
+    
+
+    useEffect(
+        () => {
+            LocationRepository.getAll()
+            // getAll() gets locations embed=animals embed=employeeLocations
+            .then((data) => {
+                updateLocations(data)})
+        }, []
+    )
+
+
+
     return (
         <div className="locations">
             {locations.map(l => <Location key={l.id} location={l} />)}

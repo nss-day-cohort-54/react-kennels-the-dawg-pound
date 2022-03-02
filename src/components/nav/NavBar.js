@@ -42,10 +42,10 @@ export const NavBar = () => {
                 })
                 .then(locations => {
                     foundItems.locations = locations
-                    return AnimalRepository.getAll()
+                    return AnimalRepository.searchByName(encodeURI(terms))
                 })
                 .then(animals => {
-                    foundItems.animals = animals.filter(anml => anml.name.includes(terms))
+                    foundItems.animals = animals
                     let copy = {...foundItems}
                     copy.isEmployee = getCurrentUser().employee
                     setTerms("")

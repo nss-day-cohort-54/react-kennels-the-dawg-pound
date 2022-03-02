@@ -32,7 +32,7 @@ export default () => {
                     <h2>Matching Employees</h2>
                     <section className="employees">
                     {location.state.employees.map(employee => {
-                            return <Employee employee={employee} />
+                            return <Employee key={`employee--${employee.id}`} employee={employee} />
                         })}
                     </section>
                 </React.Fragment>
@@ -47,7 +47,7 @@ export default () => {
                     <h2>Matching Locations</h2>
                     <section className="locations">
                     {location.state.locations.map(location => {
-                            return <Location location={location} />
+                            return <Location key={`employee--${location.id}`} location={location} />
                         })}
                     </section>
                 </React.Fragment>

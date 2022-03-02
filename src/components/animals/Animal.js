@@ -21,7 +21,10 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
     const [myOwners, setPeople] = useState([])
     //set state for all animalOwners
     const [allOwners, registerOwners] = useState([])
+    //sets state for all employees
+    const [allEmployees, updateEmployees] = useState([])
     //sets class names for html
+    
     const [classes, defineClasses] = useState("card animal")
     //destructuring to return current user obj
     const { getCurrentUser } = useSimpleAuth()
@@ -90,6 +93,10 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
         }
     }, [animalId])
 
+    useEffect(() => {
+
+    }, [])
+
 
     //jsx containing all the html elements needed to display individuals cards for each animal
     return (
@@ -133,6 +140,22 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                                     return <div key={`user-${caretaker.id}`}>{caretaker.user.name}</div>
                                 })}
                             </span>
+
+                            {isEmployee?
+                                 <select defaultValue=""
+                                        name="caretaker"
+                                        className="form-control small"
+                                        onChange={() => { }} >
+                                        <option value="">
+                                            Select {currentAnimal.animalCaretakers.length === 1 ? "another" : "an"} caretaker
+                                        </option>
+                                        {
+                                            allEmployees.map(employee => <option key={employee.id} value={employee.id}>{employee.name}</option>)
+                                        }
+                                    </select>
+
+                                :""
+                            }
 
 
                             <h6>Owners</h6>

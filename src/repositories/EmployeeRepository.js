@@ -68,6 +68,9 @@ export default {
     async assignEmployee(rel) {
         return await fetchIt(`${Settings.remoteURL}/employeeLocations`, "POST", JSON.stringify(rel))
     },
+    async removeAssignment(rel) {
+        return await fetchIt(`${Settings.remoteURL}/employeeLocations/${id}`, "POST", JSON.stringify(rel))
+    },
     async getAll() {
         const locations = await LocationRepository.getAll()
         const animals = await AnimalRepository.getAll()

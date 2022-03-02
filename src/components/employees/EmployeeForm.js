@@ -48,9 +48,6 @@ export default (props) => {
         updateEmployee(copy)
     }
 
-
-    
-
     return (
         <>
             <form className="employeeForm">

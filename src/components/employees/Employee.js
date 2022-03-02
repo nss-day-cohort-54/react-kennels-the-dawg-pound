@@ -11,6 +11,7 @@ import LocationRepository from "../../repositories/LocationRepository";
 export default ({ employee, setEmployees, employees }) => {
     const [animalCount, setCount] = useState(0)
     const [location, markLocation] = useState({ name: "" })
+    const [updatedLocation, newLocation] = useState({})
     const [classes, defineClasses] = useState("card employee")
     const [locations, defineLocations] = useState([])
     const [users, changeUser] = useState([])
@@ -22,9 +23,9 @@ export default ({ employee, setEmployees, employees }) => {
     useEffect(() => {
         if (employeeId) {
             defineClasses("card employee--single")
-            resolveResource(employee, employeeId, EmployeeRepository.get)
-                .then(() => LocationRepository.getAll())
+            LocationRepository.getAll()
                 .then(locations => defineLocations(locations))
+                .then(() => resolveResource(employee, employeeId, EmployeeRepository.get))
         } else {
             resolveResource(employee, employeeId, EmployeeRepository.get)
         }
@@ -44,88 +45,107 @@ export default ({ employee, setEmployees, employees }) => {
     }, [currentEmployee])
 
     const handleUserInput = (event) => {
-        const copy = {...currentEmployee}
-        copy[event.target.id] = event.target.value
-        //updateEmployee(copy)
+        const loc =  parseInt(event.target.value)
+        newLocation(loc)
     }
 
-    return (
-        <article className={classes}>
-            <section className="card-body">
-                <img alt="Kennel employee icon" src={person} className="icon--person" />
-                <h5 className="card-title">
-                    {
-                        employeeId
-                            ? currentEmployee.name
-                            : <Link className="card-link"
-                                to={{
-                                    pathname: `/employees/${currentEmployee.id}`,
-                                    state: { employee: currentEmployee }
-                                }}>
-                                {currentEmployee.name}
-                            </Link>
+    const assignEmployee = () => {
+        EmployeeRepository.assignEmployee({
+            userId: employee.id,
+            locationId: parseInt(newEmployee.location)
+        })
+    }
 
-                    }
-                </h5>
+return (
+    <article className={classes}>
+        <section className="card-body">
+            <img alt="Kennel employee icon" src={person} className="icon--person" />
+            <h5 className="card-title">
                 {
                     employeeId
-                        ? <>
-                            <section>
-                                Caring for {animalCount} animals
-                            </section>
-                            <section>
-                                Working at {location.name} location
-                            </section>
-                            <section>
-                                <form className="employeeForm">
-                                    {location.name
-                                        ? <label htmlFor="location">Reassign to location</label>
-                                        : <label htmlFor="location">Assign to location</label>
+                        ? currentEmployee.name
+                        : <Link className="card-link"
+                            to={{
+                                pathname: `/employees/${currentEmployee.id}`,
+                                state: { employee: currentEmployee }
+                            }}>
+                            {currentEmployee.name}
+                        </Link>
+
+                }
+            </h5>
+            {
+                employeeId
+                    ? <>
+                        <section>
+                            Caring for {animalCount} animals
+                        </section>
+                        <section>
+                            Working at {location.name} location
+                        </section>
+                        <section>
+                            <form className="employeeForm">
+                                {location.name
+                                    ? <label htmlFor="location">Reassign to location</label>
+                                    : <label htmlFor="location">Assign to location</label>
+                                }
+                                <select onChange={handleUserInput}
+                                    defaultValue=""
+                                    name="location"
+                                    id="location"
+                                    className="form-control"
+                                >
+                                    <option value="0">Select a location</option>
+                                    {locations.map(location => (
+                                        <option key={location.id} value={location.id}>
+                                            {location.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <button type="submit"
+                                    onClick={
+                                        evt => {
+                                            evt.preventDefault()
+                                            if (!getCurrentUser().employee) {
+                                                window.alert("Only employees may reassign employees")
+                                            } else {
+                                                assignEmployee()
+                                            }
+                                        }
                                     }
-                                    <select onChange={handleUserInput}
-                                        defaultValue=""
-                                        name="location"
-                                        id="location"
-                                        className="form-control"
-                                    >
-                                        <option value="0">Select a location</option>
-                                        {locations.map(location => (
-                                            <option key={location.id} value={location.id}>
-                                                {location.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </form>
-                            </section>
-                        </>
-                        : ""
+                                    className="btn btn-primary"> Save Employee </button>
+                                {/* write onClick event */}
+                            </form>
+                        </section>
+                    </>
+                    : ""
+            }
+
+            {/* write onCLick event */}
+            {currentUser.employee ? <button className="btn--fireEmployee" id={currentEmployee.id} onClick={(event) => {
+                if (currentUser.id === parseInt(event.target.id)) {
+                    window.alert("You cannot fire yourself. Please see management for assistance")
+
+                } else {
+
+                    EmployeeRepository.delete(currentEmployee.id)
+                        .then(() => {
+
+                            if (employeeId) {
+                                history.push("/employees")
+                            } else {
+                                const copy = employees.filter(employee => {
+                                    return employee.id != currentEmployee.id
+                                })
+                                setEmployees(copy)
+                            }
+                        })
                 }
 
-                {/* write onCLick event */}
-                {currentUser.employee ? <button className="btn--fireEmployee" id={currentEmployee.id} onClick={(event) => {
-                    if (currentUser.id === parseInt(event.target.id)) {
-                        window.alert("You cannot fire yourself. Please see management for assistance")
+            }}>Fire</button> : ""}
 
-                    } else {
+        </section>
 
-                        EmployeeRepository.delete(currentEmployee.id)
-                            .then(() => {
-
-                                if (employeeId) {
-                                    history.push("/employees")
-                                } else {
-                                    const copy = employees.filter(employee => {
-                                        return employee.id != currentEmployee.id
-                                    })
-                                    setEmployees(copy)
-                                }
-                            })
-                    }
-
-                }}>Fire</button> : ""}
-
-            </section>
-
-        </article>
-    )
+    </article >
+)
 }

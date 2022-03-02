@@ -9,10 +9,11 @@ import Settings from "../../repositories/Settings";
 import "./AnimalCard.css"
 import { fetchIt } from "../../repositories/Fetch";
 
+
 export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) => {
     const currentTime = new Date()
     const history = useHistory()
-    
+
     //set state of a boolean to control when to display details of an animal
     const [detailsOpen, setDetailsOpen] = useState(false)
     //set set state for employee with a deault of false
@@ -21,6 +22,8 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
     const [myOwners, setPeople] = useState([])
     //set state for all animalOwners
     const [allOwners, registerOwners] = useState([])
+    //sets value of Owner dropdown menu
+    const [owner, selectOwner] = useState(0)
     //sets class names for html
     const [classes, defineClasses] = useState("card animal")
     //destructuring to return current user obj
@@ -40,9 +43,16 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
         }
 
         fetchIt(`${Settings.remoteURL}/treatments`, "POST", JSON.stringify(newTreatment))
-        .then((setTreatment({ description: "" })))
-        
+            .then((setTreatment({ description: "" })))
+
     }
+
+    const handleOwner = (event) => {
+        event.preventDefault()
+        return AnimalOwnerRepository.assignOwner(currentAnimal.id, owner)
+            .then(selectOwner(0))
+    }
+
 
     useEffect(() => {
         //returns a booleon for the employee property on users
@@ -82,10 +92,11 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
             defineClasses("card animal--single")
             setDetailsOpen(true)
             //fetches expanded animalUsers by animalId
-            AnimalOwnerRepository.getOwnersByAnimal(animalId).then(d => setPeople(d))
+            AnimalOwnerRepository.getOwnersByAnimal(animalId)
+                .then(d => setPeople(d))
                 .then(() => {
-                    //sets state of allOwners to all users of that animalId that have an employee property of false
-                    OwnerRepository.getAllCustomers().then(registerOwners)
+                    //sets state of allOwners to all users that have an employee property of false
+                    registerOwners(owners)
                 })
         }
     }, [animalId])
@@ -110,7 +121,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                                     }
                                     else {
                                         history.push(`/animals/${currentAnimal.id}`)
-                                    
+
                                     }
                                 }}> {currentAnimal.name} </button>
                         </h5>
@@ -142,11 +153,13 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
 
 
                             {
-                                myOwners.length < 2
-                                    ? <select defaultValue=""
+                                isEmployee && myOwners.length < 2
+                                    ? <select value={owner}
                                         name="owner"
                                         className="form-control small"
-                                        onChange={() => { }} >
+                                        onChange={(evt) => {
+                                            selectOwner(parseInt(evt.target.value))
+                                        }} >
                                         <option value="">
                                             Select {myOwners.length === 1 ? "another" : "an"} owner
                                         </option>
@@ -157,25 +170,31 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                                     : null
                             }
 
-                            
+                            {
+                                isEmployee && myOwners.length < 2
+                                    ? <button className="btn btn-warning mt-3 form-control small" onClick={handleOwner}>Assign Owner</button>
+                                    : ""
+                            }
+
+
                             {
                                 isEmployee
-                                       ?<form>
-                                        <label for="treatment">Treatment: </label>
+                                    ? <form>
+                                        <label htmlFor="treatment">Treatment: </label>
                                         <input
-                                        required autoFocus
-                                        type="text"
-                                        className="form-control small"
-                                        placeholder="Add treatment"
-                                        onChange={
-                                            (evt) => {
-                                                const copy = { ...treatment }
-                                                copy.description = evt.target.value
-                                                setTreatment(copy)
-                                            }}
+                                            required autoFocus
+                                            type="text"
+                                            className="form-control small"
+                                            placeholder="Add treatment"
+                                            onChange={
+                                                (evt) => {
+                                                    const copy = { ...treatment }
+                                                    copy.description = evt.target.value
+                                                    setTreatment(copy)
+                                                }}
                                             value={treatment.description} />
-                                        </form>
-                                    : ""                       
+                                    </form>
+                                    : ""
                             }
 
 
@@ -200,12 +219,18 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                         </section>
 
                         {
+                            isEmployee ? <button className="btn btn-warning mt-3 form-control small" onClick={handleTreatment}>Add Treatment</button>
+                                : ""
+                        }
+
+
+                        {
                             isEmployee ? <button className="btn btn-warning mt-3 form-control small" onClick={() =>
-                                    AnimalOwnerRepository
-                                        .removeOwnersAndCaretakers(currentAnimal.id)
-                                        .then(() => {AnimalRepository.delete(currentAnimal.id)}) // Remove animal
-                                        .then(() => {syncAnimals()}) // Get all animals
-                                }>Discharge</button>
+                                AnimalOwnerRepository
+                                    .removeOwnersAndCaretakers(currentAnimal.id)
+                                    .then(() => { AnimalRepository.delete(currentAnimal.id) }) // Remove animal
+                                    .then(() => { syncAnimals() }) // Get all animals
+                            }>Discharge</button>
                                 : ""
                         }
 

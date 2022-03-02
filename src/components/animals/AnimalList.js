@@ -78,7 +78,6 @@ useEffect(() => {
     }
     // adds eventListener
     window.addEventListener("keyup", handler)
-    console.log("event useEffect fired")
     // removes eventListener?
     return () => window.removeEventListener("keyup", handler)
 }, [toggleDialog, modalIsOpen])

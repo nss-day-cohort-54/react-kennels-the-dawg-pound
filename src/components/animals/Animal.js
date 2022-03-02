@@ -12,7 +12,7 @@ import { fetchIt } from "../../repositories/Fetch";
 export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) => {
     const currentTime = new Date()
     const history = useHistory()
-    
+
     //set state of a boolean to control when to display details of an animal
     const [detailsOpen, setDetailsOpen] = useState(false)
     //set set state for employee with a deault of false
@@ -40,8 +40,8 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
         }
 
         fetchIt(`${Settings.remoteURL}/treatments`, "POST", JSON.stringify(newTreatment))
-        .then((setTreatment({ description: "" })))
-        
+            .then((setTreatment({ description: "" })))
+
     }
 
     useEffect(() => {
@@ -110,7 +110,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                                     }
                                     else {
                                         history.push(`/animals/${currentAnimal.id}`)
-                                    
+
                                     }
                                 }}> {currentAnimal.name} </button>
                         </h5>
@@ -159,25 +159,25 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                                     : null
                             }
 
-                            
+
                             {
                                 isEmployee
-                                       ?<form>
-                                        <label for="treatment">Treatment: </label>
+                                    ? <form>
+                                        <label htmlFor="treatment">Treatment: </label>
                                         <input
-                                        required autoFocus
-                                        type="text"
-                                        className="form-control small"
-                                        placeholder="Add treatment"
-                                        onChange={
-                                            (evt) => {
-                                                const copy = { ...treatment }
-                                                copy.description = evt.target.value
-                                                setTreatment(copy)
-                                            }}
+                                            required autoFocus
+                                            type="text"
+                                            className="form-control small"
+                                            placeholder="Add treatment"
+                                            onChange={
+                                                (evt) => {
+                                                    const copy = { ...treatment }
+                                                    copy.description = evt.target.value
+                                                    setTreatment(copy)
+                                                }}
                                             value={treatment.description} />
-                                        </form>
-                                    : ""                       
+                                    </form>
+                                    : ""
                             }
 
 
@@ -203,11 +203,11 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
 
                         {
                             isEmployee ? <button className="btn btn-warning mt-3 form-control small" onClick={() =>
-                                    AnimalOwnerRepository
-                                        .removeOwnersAndCaretakers(currentAnimal.id)
-                                        .then(() => {AnimalRepository.delete(currentAnimal.id)}) // Remove animal
-                                        .then(() => {syncAnimals()}) // Get all animals
-                                }>Discharge</button>
+                                AnimalOwnerRepository
+                                    .removeOwnersAndCaretakers(currentAnimal.id)
+                                    .then(() => { AnimalRepository.delete(currentAnimal.id) }) // Remove animal
+                                    .then(() => { syncAnimals() }) // Get all animals
+                            }>Discharge</button>
                                 : ""
                         }
 

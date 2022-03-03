@@ -38,6 +38,7 @@ export default {
         return await e.json()
     },
     async assignOwner(animalOwner) {
+        debugger
         const e = await fetch(`${Settings.remoteURL}/animalOwners`, {
             "method": "POST",
             "headers": {

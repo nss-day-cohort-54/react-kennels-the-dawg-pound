@@ -61,7 +61,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
         setAuth(getCurrentUser().employee)
         //sets resource to animal object embeded with animalOwners and animalCaretakers
         resolveResource(animal, animalId, AnimalRepository.get)
-    }, [])
+    })
 
     useEffect(() => {
         let resetAnimal = {}

@@ -10,7 +10,7 @@ import "./AnimalCard.css"
 import { fetchIt } from "../../repositories/Fetch";
 
 
-export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) => {
+export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, animalOwners }) => {
     const currentTime = new Date()
     const history = useHistory()
 
@@ -63,8 +63,8 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
 
     useEffect(() => {
         animalId = currentAnimal.id
-        currentAnimal = {}
-        resolveResource(currentAnimal, animalId, AnimalRepository.get)
+        let resetAnimal = {}
+        resolveResource(resetAnimal, animalId, AnimalRepository.get)
     }, [treatment])
 
     //sets state for allOwners whenever owners is passed an a argument for the Animal function
@@ -79,11 +79,11 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
         return AnimalOwnerRepository
             .getOwnersByAnimal(currentAnimal.id)
             .then(people => setPeople(people))
-    }
-
-    //invokes getPeople when currentAnimal changes
-    useEffect(() => {
-        getPeople()
+        }
+        
+        //invokes getPeople when currentAnimal changes
+        useEffect(() => {
+            getPeople()
     }, [currentAnimal])
 
     //listens to animalId to change and excutes code
@@ -92,7 +92,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
             defineClasses("card animal--single")
             setDetailsOpen(true)
             //fetches expanded animalUsers by animalId
-            AnimalOwnerRepository.getOwnersByAnimal(animalId)
+             AnimalOwnerRepository.getOwnersByAnimal(animalId)
                 .then(d => setPeople(d))
                 .then(() => {
                     //sets state of allOwners to all users that have an employee property of false
@@ -153,7 +153,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
 
 
                             {
-                                isEmployee && myOwners.length < 2
+                                isEmployee && currentAnimal.animalOwners.length < 2
                                     ? <select value={owner}
                                         name="owner"
                                         className="form-control small"
@@ -161,7 +161,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                                             selectOwner(parseInt(evt.target.value))
                                         }} >
                                         <option value="">
-                                            Select {myOwners.length === 1 ? "another" : "an"} owner
+                                            Select {currentAnimal.animalOwners.length === 1 ? "another" : "an"} owner
                                         </option>
                                         {
                                             allOwners.map(o => <option key={o.id} value={o.id}>{o.name}</option>)
@@ -171,7 +171,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                             }
 
                             {
-                                isEmployee && myOwners.length < 2
+                                isEmployee && currentAnimal.animalOwners.length < 2
                                     ? <button className="btn btn-warning mt-3 form-control small" onClick={handleOwner}>Assign Owner</button>
                                     : ""
                             }

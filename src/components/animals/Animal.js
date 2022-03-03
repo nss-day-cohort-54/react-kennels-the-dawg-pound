@@ -18,8 +18,6 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
     const [detailsOpen, setDetailsOpen] = useState(false)
     //set set state for employee with a deault of false
     const [isEmployee, setAuth] = useState(false)
-    //set animalOwners state
-    const [myOwners, setPeople] = useState([])
     //set state for all animalOwners
     const [allOwners, registerOwners] = useState([])
     //sets state for all employees
@@ -98,24 +96,6 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
         resolveResource(resetAnimal, currentAnimal.id, AnimalRepository.get)
     }, [treatment])
 
-    //sets state for allOwners whenever owners is passed an a argument for the Animal function
-    // useEffect(() => {
-    //     if (owners) {
-    //         registerOwners(owners)
-    //     }
-    // }, [owners])
-
-    //function that sets state for myOwners by expanding on animalOwners matching the animalOwner.animalId to animalId param
-    const getPeople = () => {
-        return AnimalOwnerRepository
-            .getOwnersByAnimal(currentAnimal.id)
-            .then(people => setPeople(people))
-    }
-
-    //invokes getPeople when currentAnimal changes
-    useEffect(() => {
-        getPeople()
-    }, [currentAnimal])
 
     //listens to animalId to change and excutes code
     useEffect(() => {
@@ -125,12 +105,6 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
             setDetailsOpen(true)
             OwnerRepository.getAllCustomers()
                 .then(data => registerOwners(data))
-            //fetches expanded animalUsers by animalId
-            // AnimalOwnerRepository.getOwnersByAnimal(animalId)
-            //     .then(d => setPeople(d))
-            //     .then(() => {
-            //         //sets state of allOwners to all users that have an employee property of false
-            //         registerOwners(owners)
         }
 
     }, [animalId])

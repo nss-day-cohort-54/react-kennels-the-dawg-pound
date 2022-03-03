@@ -10,7 +10,7 @@ import "./AnimalCard.css"
 import { fetchIt } from "../../repositories/Fetch";
 
 
-export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, animalOwners }) => {
+export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) => {
     const currentTime = new Date()
     const history = useHistory()
 
@@ -32,7 +32,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
     const [classes, defineClasses] = useState("card animal")
     //destructuring to return current user obj
     const { getCurrentUser } = useSimpleAuth()
-    let { animalId } = useParams()
+    const { animalId } = useParams()
     //sets state for currentAnimal
     let { resolveResource, resource: currentAnimal } = useResourceResolver()
     const [treatment, setTreatment] = useState({ description: "" })

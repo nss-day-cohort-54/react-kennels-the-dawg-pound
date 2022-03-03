@@ -3,29 +3,23 @@ import "./AnimalForm.css"
 import AnimalRepository from "../../repositories/AnimalRepository";
 import EmployeeRepository from "../../repositories/EmployeeRepository";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
+import AnimalOwnerRepository from "../../repositories/AnimalOwnerRepository";
+import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 
 export default (props) => {
     const [animalName, setName] = useState("")
     const [breed, setBreed] = useState("")
-    const [animals, setAnimals] = useState([])
     const [employees, setEmployees] = useState([])
     const [employeeId, setEmployeeId] = useState(0)
     const [saveEnabled, setEnabled] = useState(false)
     const history = useHistory()
+    const {getCurrentUser} = useSimpleAuth()
 
     useEffect(
         () => {
             EmployeeRepository.getAll()
             .then((data) => {
                 setEmployees(data)})
-        }, []
-    )
-
-    useEffect(
-        () => {
-            AnimalRepository.getAll()
-            .then((data) => {
-                setAnimals(data)})
         }, []
     )
 
@@ -43,8 +37,16 @@ export default (props) => {
                 breed: breed,
                 locationId: parseInt(emp.employeeLocations[0].locationId)
             }
-            
+
             AnimalRepository.addAnimal(animal)
+                .then((addedAnimal) => {
+                    const animalOwner = {
+                        userId: getCurrentUser().id,
+                        animalId: addedAnimal.id
+                    }
+                    
+                    return AnimalOwnerRepository.assignOwner(animalOwner)
+                })
                 .then(() => setEnabled(true))
                 .then(() => history.push("/animals"))
         }

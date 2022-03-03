@@ -24,7 +24,7 @@ export default {
         return AnimalRepository.get(animalId)
             .then(animal => {
                 const ownerDeletes = animal.animalOwners.map(
-                    ao => fetchIt(`${Settings.remoteURL}/animalOwners/${ao.id}`,"DELETE")
+                    ao => fetchIt(`${Settings.remoteURL}/animalOwners/${ao.id}`, "DELETE")
                 )
                 const employeeDeletes = animal.animalCaretakers.map(
                     c => fetchIt(`${Settings.remoteURL}/animalCaretakers/${c.id}`, "DELETE")
@@ -33,12 +33,12 @@ export default {
                     .then(() => Promise.all(employeeDeletes))
             })
     },
-    async getOwnersByAnimal (animalId) {
+    async getOwnersByAnimal(animalId) {
         const e = await fetch(`${Settings.remoteURL}/animalOwners?animalId=${animalId}&_expand=user`)
         return await e.json()
     },
     async assignOwner(animalOwner) {
-        debugger
+
         const e = await fetch(`${Settings.remoteURL}/animalOwners`, {
             "method": "POST",
             "headers": {

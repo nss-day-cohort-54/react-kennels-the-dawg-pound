@@ -47,6 +47,16 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
         
     }
 
+    const handleCaretaker = (event) => {
+    
+        const newCaretakerObject={
+            animalId: currentAnimal.id,
+            userId: parseInt(event.target.value)
+        }
+        AnimalRepository.addAnimalCaretaker(newCaretakerObject)
+        .then(() => {currentAnimal.caretaker})
+    }
+
     useEffect(() => {
         //returns a booleon for the employee property on users
         setAuth(getCurrentUser().employee)
@@ -96,11 +106,6 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
         }
     }, [animalId])
 
-    //useEffect to set state for allEmployees
-    useEffect(() => {
-        
-
-    }, [])
 
 
     //jsx containing all the html elements needed to display individuals cards for each animal
@@ -152,7 +157,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                                          <select defaultValue=""
                                         name="caretaker"
                                         className="form-control small"
-                                        onChange={() => { }} >
+                                        onChange={handleCaretaker} >
                                         <option value="">
                                             Select {currentAnimal.animalCaretakers.length === 1 ? "another" : "an"} caretaker
                                         </option>
@@ -164,6 +169,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                                 
                                 :""
                             }
+                            
 
 
                             <h6>Owners</h6>

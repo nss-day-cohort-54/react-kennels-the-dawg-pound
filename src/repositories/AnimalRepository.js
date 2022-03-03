@@ -43,6 +43,13 @@ export default {
             })
         return animals
     },
+
+    async addAnimalCaretaker(newCaretakerObject) {
+        return await fetchIt(`${Settings.remoteURL}/animalCaretakers`,
+            "POST",
+            JSON.stringify(newCaretakerObject))
+    },
+
     async addAnimal(newAnimal) {
         return await fetchIt(
             `${Settings.remoteURL}/animals`,

@@ -80,6 +80,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
     useEffect(() => {
         //returns a booleon for the employee property on users
         setAuth(getCurrentUser().employee)
+        debugger
         //sets resource to animal object embeded with animalOwners and animalCaretakers
         resolveResource(animal, animalId, AnimalRepository.get)
         OwnerRepository.getAllEmployees()
@@ -88,9 +89,9 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
     }, [])
 
     useEffect(() => {
-        animalId = currentAnimal.id
+        
         let resetAnimal = {}
-        resolveResource(resetAnimal, animalId, AnimalRepository.get)
+        resolveResource(resetAnimal, currentAnimal.id, AnimalRepository.get)
     }, [treatment])
 
     //sets state for allOwners whenever owners is passed an a argument for the Animal function
@@ -114,11 +115,12 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
 
     //listens to animalId to change and excutes code
     useEffect(() => {
+        debugger
         if (animalId) {
             defineClasses("card animal--single")
             setDetailsOpen(true)
             OwnerRepository.getAllCustomers()
-                .then(registerOwners)
+                .then(data => registerOwners(data))
             //fetches expanded animalUsers by animalId
             // AnimalOwnerRepository.getOwnersByAnimal(animalId)
             //     .then(d => setPeople(d))
@@ -221,8 +223,10 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
                                             Select {currentAnimal.animalOwners?.length === 1 ? "another" : "an"} owner
                                         </option>
                                         {
-                                            animalId ? owners.map(o => <option key={o.id} value={o.id}>{o.name}</option>)
-                                                : allOwners.map(o => <option key={o.id} value={o.id}>{o.name}</option>)
+                                            animalId ? allOwners.map(o => {
+                                                debugger
+                                            return <option key={`animalOwner--${o.id}`} value={o.id}>{o.name}</option>})
+                                                : owners.map(o => <option key={`animalOwner--${o.id}`} value={o.id}>{o.name}</option>)
 
                                         }
 

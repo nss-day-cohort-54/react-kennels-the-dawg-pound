@@ -47,6 +47,7 @@ export default (props) => {
                     
                     return AnimalOwnerRepository.assignOwner(animalOwner)
                 })
+                .then((animalOwner) => AnimalRepository.addAnimalCaretaker({animalId: animalOwner.animalId, userId: eId}))
                 .then(() => setEnabled(true))
                 .then(() => history.push("/animals"))
         }

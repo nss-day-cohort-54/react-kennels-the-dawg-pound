@@ -48,8 +48,11 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
     }
 
     const handleOwner = (event) => {
+        animalId = currentAnimal.id
+        let resetAnimal = {}
         event.preventDefault()
         return AnimalOwnerRepository.assignOwner(currentAnimal.id, owner)
+        .then(resolveResource(resetAnimal, animalId, AnimalRepository.get))
             .then(selectOwner(0))
     }
 
@@ -149,7 +152,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
                             <h6>Owners</h6>
                             <span className="small">
                                 {
-                                    myOwners.map(owner => <div key={`owner--${owner.id}`}>{owner.user.name}</div>)
+                                    currentAnimal.animalOwners?.map(owner => <div key={`owner--${owner.id}`}>{owner.user.name}</div>)
                                 }
                             </span>
 

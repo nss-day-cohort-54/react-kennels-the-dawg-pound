@@ -8,8 +8,6 @@ import "./Location.css"
 //should export location details in jsx format
 //default sets it as file name?
 export default () => {
-    const [animals, setAnimals] = useState([])
-    const [employees, updateEmployees] = useState([])
     //sets animals and employee locations to locations
     const [location, set] = useState({animals:[], employeeLocations: []})
     //matches url to current locationId

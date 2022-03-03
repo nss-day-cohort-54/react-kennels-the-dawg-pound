@@ -17,7 +17,6 @@ export const AnimalListComponent = (props) => {
     // inially empty array
     const [animals, petAnimals] = useState([])
     const [ownerAnimals, setOwnerAnimals] = useState([])
-
     // initializes animalOwners and setter function setAnimalOwners
     const [animalOwners, setAnimalOwners] = useState([])
     // initializes owners and setter function updateOwners

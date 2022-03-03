@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom"
 import locationImage from "./location.png"
 import "./Location.css"
 import LocationRepository from "../../repositories/LocationRepository";
-// import EmployeeRepository from "../../repositories/EmployeeRepository";
 import useResourceResolver from "../../hooks/resource/useResourceResolver";
 
 //creates jsx of location cards
@@ -13,7 +12,6 @@ export default ({location}) => {
     const [employeeCount, updateEmployeeCount] = useState(0)
     const { locationId } = useParams()
     const { resolveResource, resource } = useResourceResolver()
-    // const [employees, setEmployees] = 
 
 
     useEffect(() => {
@@ -52,21 +50,14 @@ export default ({location}) => {
                                 {resource.name}
                             </Link>
                             <section>
-                                Total animal {animalCount}
+                                Total Animal: {animalCount}
                             </section>
                             <section>
-                                Total Employee {employeeCount}
+                                Total Employee: {employeeCount}
                             </section>
                         </>
                     }
                 </h5>
-                {/* {
-                    locationId
-                        ? <>
-                            
-                        </>
-                        : ""
-                } */}
             </section>
             
         </article>

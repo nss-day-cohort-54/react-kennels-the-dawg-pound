@@ -148,7 +148,9 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
 
                             <h6>Owners</h6>
                             <span className="small">
-                                Owned by unknown
+                                {
+                                    myOwners.map(owner => <div key={`owner--${owner.id}`}>{owner.user.name}</div>)
+                                }
                             </span>
 
 

@@ -1,43 +1,52 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
+import { useHistory } from "react-router-dom"
 import EmployeeRepository from "../../repositories/EmployeeRepository";
 import "./EmployeeForm.css"
+import LocationRepository from "../../repositories/LocationRepository";
 
 
 export default (props) => {
-    const [employee, updateEmployee] = useState()
+    const [newEmployee, updateEmployee] = useState({name: "", location: 0})
     const [locations, defineLocations] = useState([])
+    const { getCurrentUser } = useSimpleAuth()
+    const history = useHistory()
 
     // write useEffect() (s)
+    useEffect(
+        () => {
+            LocationRepository.getAll()
+                .then(locations => defineLocations(locations))
+        }
+    , [])
 
     const constructNewEmployee = () => {
-        if (employee.locationId === 0) {
-            window.alert("Please select a location")
-        } else {
+        if (newEmployee.name.length === 0) {
+            window.alert("Please enter employee name.")
+        } else if (parseInt(newEmployee.location) === 0) {
+            window.alert("Please select a location.")
+        }  else {
             EmployeeRepository.addEmployee({
-                name: employee.name,
+                name: newEmployee.name,
                 employee: true
             })
             .then(employee => {
                 EmployeeRepository.assignEmployee({
-                    employeeId: employee.id,
-                    locationId: employee.location
+                    userId: employee.id,
+                    locationId: parseInt(newEmployee.location)
                 })
             })
-            .then(() => props.history.push("/employees"))
+            .then(() => history.push("/employees"))
             
         }
     }
 
     // update employee to transient state after add new employee or assign a location
     const handleUserInput = (event) => {
-        const copy = {...employee}
+        const copy = {...newEmployee}
         copy[event.target.id] = event.target.value
         updateEmployee(copy)
     }
-
-
-    
 
     return (
         <>
@@ -47,6 +56,8 @@ export default (props) => {
                     <label htmlFor="employeeName">Employee name</label>
                     <input onChange={handleUserInput}
                         type="text"
+                        name="employeeName"
+                        id="name"
                         required
                         autoFocus
                         className="form-control"
@@ -58,12 +69,13 @@ export default (props) => {
                     <select onChange={handleUserInput}
                         defaultValue=""
                         name="location"
+                        id="location"
                         className="form-control"
                     >
                         <option value="0">Select a location</option>
-                        {locations.map(e => (
-                            <option key={e.id} value={e.id}>
-                                {e.name}
+                        {locations.map(location => (
+                            <option key={location.id} value={location.id}>
+                                {location.name}
                             </option>
                         ))}
                     </select>
@@ -72,7 +84,11 @@ export default (props) => {
                     onClick={
                         evt => {
                             evt.preventDefault()
-                            constructNewEmployee()
+                            if (!getCurrentUser().employee) {
+                                window.alert("Only employees may add employees")
+                            } else {
+                                constructNewEmployee()
+                            }
                         }
                     }
                     className="btn btn-primary"> Save Employee </button>

@@ -23,7 +23,7 @@ export const NavBar = () => {
         //if "enter" is pressed
         if (e.keyCode === 13) {
             //gets terms from document
-            const terms = document.querySelector("#searchTerms").value
+            const terms = searchTerms
             //creates foundItems object with empty arrays
             const foundItems = {
                 animals: [],

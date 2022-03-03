@@ -22,9 +22,13 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
     const [myOwners, setPeople] = useState([])
     //set state for all animalOwners
     const [allOwners, registerOwners] = useState([])
+    //sets state for all employees
+    const [allEmployees, updateEmployees] = useState([])
     //sets value of Owner dropdown menu
     const [owner, selectOwner] = useState(0)
+    const [caretaker, selectCaretaker] = useState(0)
     //sets class names for html
+
     const [classes, defineClasses] = useState("card animal")
     //destructuring to return current user obj
     const { getCurrentUser } = useSimpleAuth()
@@ -47,12 +51,32 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
 
     }
 
-    const handleOwner = (event) => {
-        animalId = currentAnimal.id
+    const handleCaretaker = (event) => {
+        const resetAnimalId = currentAnimal.id
+        const newCaretakerObject = {
+            animalId: currentAnimal.id,
+            userId: caretaker
+        }
         let resetAnimal = {}
         event.preventDefault()
-        return AnimalOwnerRepository.assignOwner(currentAnimal.id, owner)
-        .then(resolveResource(resetAnimal, animalId, AnimalRepository.get))
+        if (caretaker) {
+
+            return AnimalRepository.addAnimalCaretaker(newCaretakerObject)
+                .then(resolveResource(resetAnimal, resetAnimalId, AnimalRepository.get))
+                .then(selectCaretaker(0))
+        }
+
+    }
+    const handleOwner = (event) => {
+        const resetAnimalId = currentAnimal.id
+        const newOwner = {
+            animalId: currentAnimal.id,
+            userId:owner
+        }
+        let resetAnimal = {}
+        event.preventDefault()
+        return AnimalOwnerRepository.assignOwner(newOwner)
+            .then(resolveResource(resetAnimal, resetAnimalId, AnimalRepository.get))
             .then(selectOwner(0))
     }
 
@@ -60,49 +84,57 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
     useEffect(() => {
         //returns a booleon for the employee property on users
         setAuth(getCurrentUser().employee)
+
         //sets resource to animal object embeded with animalOwners and animalCaretakers
         resolveResource(animal, animalId, AnimalRepository.get)
+        OwnerRepository.getAllEmployees()
+            .then(data => updateEmployees(data))
+
     }, [])
 
     useEffect(() => {
-        animalId = currentAnimal.id
+        
         let resetAnimal = {}
-        resolveResource(resetAnimal, animalId, AnimalRepository.get)
+        resolveResource(resetAnimal, currentAnimal.id, AnimalRepository.get)
     }, [treatment])
 
     //sets state for allOwners whenever owners is passed an a argument for the Animal function
-    useEffect(() => {
-        if (owners) {
-            registerOwners(owners)
-        }
-    }, [owners])
+    // useEffect(() => {
+    //     if (owners) {
+    //         registerOwners(owners)
+    //     }
+    // }, [owners])
 
     //function that sets state for myOwners by expanding on animalOwners matching the animalOwner.animalId to animalId param
     const getPeople = () => {
         return AnimalOwnerRepository
             .getOwnersByAnimal(currentAnimal.id)
             .then(people => setPeople(people))
-        }
-        
-        //invokes getPeople when currentAnimal changes
-        useEffect(() => {
-            getPeople()
+    }
+
+    //invokes getPeople when currentAnimal changes
+    useEffect(() => {
+        getPeople()
     }, [currentAnimal])
 
     //listens to animalId to change and excutes code
     useEffect(() => {
+
         if (animalId) {
             defineClasses("card animal--single")
             setDetailsOpen(true)
+            OwnerRepository.getAllCustomers()
+                .then(data => registerOwners(data))
             //fetches expanded animalUsers by animalId
-             AnimalOwnerRepository.getOwnersByAnimal(animalId)
-                .then(d => setPeople(d))
-                .then(() => {
-                    //sets state of allOwners to all users that have an employee property of false
-                    registerOwners(owners)
-                })
+            // AnimalOwnerRepository.getOwnersByAnimal(animalId)
+            //     .then(d => setPeople(d))
+            //     .then(() => {
+            //         //sets state of allOwners to all users that have an employee property of false
+            //         registerOwners(owners)
         }
+
     }, [animalId])
+
 
 
     //jsx containing all the html elements needed to display individuals cards for each animal
@@ -148,6 +180,32 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
                                 })}
                             </span>
 
+                            {isEmployee &&
+                                currentAnimal.animalCaretakers?.length < 2 ?
+
+                                <select value={caretaker}
+                                    name="caretaker"
+                                    className="form-control small"
+                                    onChange={(evt) => {
+                                        selectCaretaker(parseInt(evt.target.value))
+                                    }}>
+                                    <option value="">
+                                        Select {currentAnimal.animalCaretakers?.length === 1 ? "another" : "an"} caretaker
+                                    </option>
+                                    {
+                                        allEmployees.map(employee => <option key={employee.id} value={employee.id}>{employee.name}</option>)
+                                    }
+                                </select>
+                                : ""
+
+
+                            }
+                            {
+                                isEmployee && currentAnimal.animalCaretakers?.length < 2
+                                    ? <button className="btn btn-warning mt-3 form-control small" onClick={handleCaretaker}>Assign Caretaker</button>
+                                    : ""
+                            }
+
 
                             <h6>Owners</h6>
                             <span className="small">
@@ -158,7 +216,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
 
 
                             {
-                                isEmployee && currentAnimal.animalOwners.length < 2
+                                isEmployee && currentAnimal.animalOwners?.length < 2
                                     ? <select value={owner}
                                         name="owner"
                                         className="form-control small"
@@ -166,17 +224,22 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
                                             selectOwner(parseInt(evt.target.value))
                                         }} >
                                         <option value="">
-                                            Select {currentAnimal.animalOwners.length === 1 ? "another" : "an"} owner
+                                            Select {currentAnimal.animalOwners?.length === 1 ? "another" : "an"} owner
                                         </option>
                                         {
-                                            allOwners.map(o => <option key={o.id} value={o.id}>{o.name}</option>)
+                                            animalId ? allOwners.map(o => {
+                                               
+                                            return <option key={`animalOwner--${o.id}`} value={o.id}>{o.name}</option>})
+                                                : owners.map(o => <option key={`animalOwner--${o.id}`} value={o.id}>{o.name}</option>)
+
                                         }
+
                                     </select>
                                     : null
                             }
 
                             {
-                                isEmployee && currentAnimal.animalOwners.length < 2
+                                isEmployee && currentAnimal.animalOwners?.length < 2
                                     ? <button className="btn btn-warning mt-3 form-control small" onClick={handleOwner}>Assign Owner</button>
                                     : ""
                             }

@@ -84,7 +84,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
     useEffect(() => {
         //returns a booleon for the employee property on users
         setAuth(getCurrentUser().employee)
-        debugger
+
         //sets resource to animal object embeded with animalOwners and animalCaretakers
         resolveResource(animal, animalId, AnimalRepository.get)
         OwnerRepository.getAllEmployees()
@@ -119,7 +119,7 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners, anim
 
     //listens to animalId to change and excutes code
     useEffect(() => {
-        debugger
+
         if (animalId) {
             defineClasses("card animal--single")
             setDetailsOpen(true)

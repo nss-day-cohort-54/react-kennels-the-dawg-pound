@@ -1,15 +1,27 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useEffect } from "react"
 import "./AnimalForm.css"
 import AnimalRepository from "../../repositories/AnimalRepository";
-
+import EmployeeRepository from "../../repositories/EmployeeRepository";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
+import AnimalOwnerRepository from "../../repositories/AnimalOwnerRepository";
+import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 
 export default (props) => {
     const [animalName, setName] = useState("")
     const [breed, setBreed] = useState("")
-    const [animals, setAnimals] = useState([])
     const [employees, setEmployees] = useState([])
     const [employeeId, setEmployeeId] = useState(0)
     const [saveEnabled, setEnabled] = useState(false)
+    const history = useHistory()
+    const {getCurrentUser} = useSimpleAuth()
+
+    useEffect(
+        () => {
+            EmployeeRepository.getAll()
+            .then((data) => {
+                setEmployees(data)})
+        }, []
+    )
 
     const constructNewAnimal = evt => {
         evt.preventDefault()
@@ -19,16 +31,24 @@ export default (props) => {
             window.alert("Please select a caretaker")
         } else {
             const emp = employees.find(e => e.id === eId)
+
             const animal = {
                 name: animalName,
                 breed: breed,
-                employeeId: eId,
-                locationId: parseInt(emp.locationId)
+                locationId: parseInt(emp.employeeLocations[0].locationId)
             }
 
             AnimalRepository.addAnimal(animal)
+                .then((addedAnimal) => {
+                    const animalOwner = {
+                        userId: getCurrentUser().id,
+                        animalId: addedAnimal.id
+                    }
+                    
+                    return AnimalOwnerRepository.assignOwner(animalOwner)
+                })
                 .then(() => setEnabled(true))
-                .then(() => props.history.push("/animals"))
+                .then(() => history.push("/animals"))
         }
     }
 

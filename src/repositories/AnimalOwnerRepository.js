@@ -37,14 +37,13 @@ export default {
         const e = await fetch(`${Settings.remoteURL}/animalOwners?animalId=${animalId}&_expand=user`)
         return await e.json()
     },
-    async assignOwner(animalId, userId) {
+    async assignOwner(animalOwner) {
         const e = await fetch(`${Settings.remoteURL}/animalOwners`, {
             "method": "POST",
             "headers": {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem("kennel_token")}`
+                "Content-Type": "application/json"
             },
-            "body": JSON.stringify({ animalId, userId })
+            "body": JSON.stringify(animalOwner)
         })
         return await e.json()
     },

@@ -52,6 +52,9 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
         setAuth(getCurrentUser().employee)
         //sets resource to animal object embeded with animalOwners and animalCaretakers
         resolveResource(animal, animalId, AnimalRepository.get)
+        OwnerRepository.getAllEmployees()
+        .then(data => updateEmployees(data))
+        
     }, [])
 
     useEffect(() => {
@@ -93,7 +96,9 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
         }
     }, [animalId])
 
+    //useEffect to set state for allEmployees
     useEffect(() => {
+        
 
     }, [])
 
@@ -142,7 +147,9 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                             </span>
 
                             {isEmployee?
-                                 <select defaultValue=""
+                                currentAnimal.animalCaretakers.length < 2?
+                                    
+                                         <select defaultValue=""
                                         name="caretaker"
                                         className="form-control small"
                                         onChange={() => { }} >
@@ -153,7 +160,8 @@ export const Animal = ({ animal, syncAnimals, showTreatmentHistory, owners }) =>
                                             allEmployees.map(employee => <option key={employee.id} value={employee.id}>{employee.name}</option>)
                                         }
                                     </select>
-
+                                :""
+                                
                                 :""
                             }
 
